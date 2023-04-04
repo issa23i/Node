@@ -25,10 +25,7 @@ const getItem = (req, res) => {
  * @param {*} res 
  */
 const createItem = async (req, res) => {
-    console.log('llamada la función createItem')
     const { body } = req
-    console.log(body)
-    console.log('hola')
     const data = await imagenModel.create(body)
     res.send({data})
 }
