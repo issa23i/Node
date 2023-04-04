@@ -1,10 +1,10 @@
 const express = require('express')
-const { getItems, getItem } = require('../controllers/imagenes')
+const { getItems, getItem, createItem } = require('../controllers/imagenes')
 const router = express.Router()
 
 // TODO: http://localhost/imagenes GET, POST, DELETE, PUT
 
 router.get("/", getItems)
-router.get("/:id", getItem)
+router.post("/", createItem)
 
 module.exports = router

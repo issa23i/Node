@@ -1,11 +1,14 @@
+const { imagenModel } = require('../models')
+
+
 /**
  * Obtener una lista
  * @param {*} req 
  * @param {*} res 
  */
-const getItems = (req, res) => {
-    const data = ["hola","mundo"]
-    res.send({data}) // res.send({data:data})
+const getItems = async (req, res) => {
+    const data = await imagenModel.find({}) // devuelve una promesa
+    res.send({data})
 }
 
 /**
@@ -13,14 +16,22 @@ const getItems = (req, res) => {
  * @param {} req 
  * @param {*} res 
  */
-const getItem = (req, res) => {}
+const getItem = (req, res) => {
+}
 
 /**
  * Insertar un registro
  * @param {*} req 
  * @param {*} res 
  */
-const createItem = (req, res) => {}
+const createItem = async (req, res) => {
+    console.log('llamada la función createItem')
+    const { body } = req
+    console.log(body)
+    console.log('hola')
+    const data = await imagenModel.create(body)
+    res.send({data})
+}
 
 /**
  * Actualizar un registro
