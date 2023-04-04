@@ -5,7 +5,7 @@ const router = express.Router()
 const PATH_ROUTES = __dirname
 
 
-// leer el directorio y obtener los nombres de los archivos sin .js
+// leer el directorio y obtener los nombres de los archivos sin .js (carga dinámica)
 const removeExtension = ( fileName) => {
     return fileName.split('.').shift()
 }
