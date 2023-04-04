@@ -22,6 +22,10 @@ const habitacionSchema = new mongoose.Schema({
   precios: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PrecioHabitacion'
+  }],
+  imagenes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Imagen'
   }]
 }, { timestamps: true });
 

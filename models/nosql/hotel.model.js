@@ -28,7 +28,11 @@ const hotelSchema = new mongoose.Schema({
   tieneSello: {
     type: Boolean,
     default: false
-  }
+  },
+  imagenes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Imagen'
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Hotel', hotelSchema);
