@@ -1,4 +1,5 @@
 const { imagenModel } = require('../models')
+const PUBLIC_URL = process.env.PUBLIC_URL
 
 
 /**
@@ -25,8 +26,13 @@ const getItem = (req, res) => {
  * @param {*} res 
  */
 const createItem = async (req, res) => {
-    const { body } = req // deconstruido const body = req.body
-    const data = await imagenModel.create(body)
+    const { body, file } = req // deconstruido const body = req.body
+    console.log(file)
+    const fileData = {
+        filename : file.filename,
+        url : `${PUBLIC_URL}/${file.filename}`
+    }
+    const data = await imagenModel.create(fileData)
     res.send({data})
 }
 

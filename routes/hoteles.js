@@ -12,9 +12,6 @@ console.log(objectId3); */
 
 // TODO: http://localhost:3001/hoteles GET, POST, DELETE, PUT
 
-/* router.post('/', (req,res) => { // método post para el envío de archivos 
-    res.send({a:1})
-}) */
 
 router.get("/", getItems)
 router.post("/", createItem) // método post para el envío de archivos 
