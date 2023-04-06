@@ -8,8 +8,12 @@ const PUBLIC_URL = process.env.PUBLIC_URL
  * @param {*} res 
  */
 const getItems = async (req, res) => {
-    const data = await imagenModel.find({}) // devuelve una promesa
-    res.send({data})
+    try {
+        const data = await imagenModel.find({}) // devuelve una promesa
+        res.send({data})
+    } catch (error) {
+        handleHttpError(res, 'ERROR_EN_GET_ITEMS')
+    }
 }
 
 /**
@@ -25,15 +29,18 @@ const getItem = (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const createItem = async (req, res) => {
-    const { body, file } = req // deconstruido const body = req.body
-    console.log(file)
-    const fileData = {
-        filename : file.filename,
-        url : `${PUBLIC_URL}/${file.filename}`
+const createItem = async (req, res) => { // TODO: subida de archivos, mejorar
+    try {
+        const { body, file } = req // deconstruido const body = req.body
+        const fileData = {
+            filename : file.filename,
+            url : `${PUBLIC_URL}/${file.filename}`
+        }
+        const data = await imagenModel.create(fileData)
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_SUBIDA_DE_ARCHIVO')
     }
-    const data = await imagenModel.create(fileData)
-    res.send({data})
 }
 
 /**

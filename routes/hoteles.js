@@ -8,7 +8,7 @@ const customHeader = require('../middleware/customHeader')
 
 
 router.get("/", getItems)
-router.post("/", validationCreateItem, customHeader ,createItem) // método post para el envío de archivos 
+router.post("/", validationCreateItem, /**customHeader ,*/createItem) // método post para el envío de archivos 
 
 
 

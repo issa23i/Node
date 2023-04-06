@@ -1,4 +1,6 @@
+const { matchedData } = require('express-validator')
 const { hotelModel } = require('../models')
+const {handleHttpError} = require('../utils/handleError')
 
 
 /**
@@ -7,8 +9,12 @@ const { hotelModel } = require('../models')
  * @param {*} res 
  */
 const getItems = async (req, res) => {
-    const data = await hotelModel.find({}) // devuelve una promesa
-    res.send({data})
+    try {
+        const data = await hotelModel.find({}) // devuelve una promesa
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_GET_ITEMS')
+    }
 }
 
 /**
@@ -25,9 +31,13 @@ const getItem = (req, res) => {
  * @param {*} res 
  */
 const createItem = async (req, res) => {
-    const { body } = req // deconstruido const body = req.body
-    const data = await hotelModel.create(body)
-    res.send({data})
+    try {
+        const body = matchedData(req) // recoge sólo los datos validados (carpeta validators)
+        const data = await hotelModel.create(body)
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_CREATE_ITEM')
+    }
 }
 
 /**
