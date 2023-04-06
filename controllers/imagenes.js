@@ -21,7 +21,7 @@ const getItems = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const getItem = (req, res) => {
+const getItem = async (req, res) => {
 }
 
 /**
@@ -48,13 +48,13 @@ const createItem = async (req, res) => { // TODO: subida de archivos, mejorar
  * @param {*} req 
  * @param {*} res 
  */
-const updateItem = (req, res) => {}
+const updateItem = async (req, res) => {}
 
 /**
  * Eliminar un registro
  * @param {*} req 
  * @param {*} res 
  */
-const deleteItem = (req, res) => {}
+const deleteItem = async (req, res) => {}
 
 module.exports = { getItems, getItem, createItem, updateItem, deleteItem }

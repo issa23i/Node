@@ -13,4 +13,10 @@ const validationCreateItem = [
     (req,res,next) => validateResuls(req,res,next)
 ]
 
-module.exports = { validationCreateItem }
+const validationGetItem = [
+    check("id").exists().notEmpty().isMongoId(),
+    (req,res,next) => validateResuls(req,res,next)
+]
+
+
+module.exports = { validationCreateItem, validationGetItem }
