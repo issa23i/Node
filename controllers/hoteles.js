@@ -1,4 +1,4 @@
-const { imagenModel } = require('../models')
+const { hotelModel } = require('../models')
 
 
 /**
@@ -7,7 +7,7 @@ const { imagenModel } = require('../models')
  * @param {*} res 
  */
 const getItems = async (req, res) => {
-    const data = await imagenModel.find({}) // devuelve una promesa
+    const data = await hotelModel.find({}) // devuelve una promesa
     res.send({data})
 }
 
@@ -26,7 +26,7 @@ const getItem = (req, res) => {
  */
 const createItem = async (req, res) => {
     const { body } = req // deconstruido const body = req.body
-    const data = await imagenModel.create(body)
+    const data = await hotelModel.create(body)
     res.send({data})
 }
 
