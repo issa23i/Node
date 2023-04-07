@@ -1,7 +1,6 @@
 const { matchedData } = require('express-validator')
-const { hotelModel } = require('../models')
+const { personaModel } = require('../models')
 const {handleHttpError} = require('../utils/handleError')
-
 
 /**
  * Obtener una lista
@@ -10,7 +9,7 @@ const {handleHttpError} = require('../utils/handleError')
  */
 const getItems = async (req, res) => {
     try {
-        const data = await hotelModel.find({}) 
+        const data = await personaModel.find({})
         res.send({data})
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_GET_ITEMS')
@@ -26,7 +25,7 @@ const getItem = async (req, res) => {
     try{
         req = matchedData(req)
         const {id} = req
-        const data = await hotelModel.findById(id) 
+        const data = await personaModel.findById(id) 
         res.send({data})
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_GET_ITEM')
@@ -41,7 +40,7 @@ const getItem = async (req, res) => {
 const createItem = async (req, res) => {
     try {
         const body = matchedData(req) // recoge sólo los datos validados (carpeta validators)
-        const data = await hotelModel.create(body)
+        const data = await personaModel.create(body)
         res.send({data})
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_CREATE_ITEM')
@@ -56,7 +55,7 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
     try{
         const {id, ...body} = matchedData(req) // recoge id y lo que sobra en body {id} {body}
-        const data = await hotelModel.findOneAndUpdate(
+        const data = await personaModel.findOneAndUpdate(
             {_id: id}, // busca por id,
             body, // devuelve el cuerpo (body)
             {new: true}) // que devuelva actualizado, no el antiguo
@@ -75,7 +74,7 @@ const deleteItem = async (req, res) => {
     try{
         req = matchedData(req)
         const {id} = req
-        const data = await hotelModel.deleteOne({_id:id}) // borra el registro que coincida con el id
+        const data = await personaModel.deleteOne({_id:id}) // borra el registro que coincida con el id
         res.send({data})
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_DELETE_ITEM')
