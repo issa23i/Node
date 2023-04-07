@@ -6,7 +6,9 @@ const validationCreateItem = [
   check('nombre').exists().notEmpty(),
   check('apellido1').exists().notEmpty(),
   check('apellido2').optional(),
-  check('rol').optional().isIn(['admin', 'user', 'kelly']),
+  check('email').exists().isEmail(),
+  check('password').exists().notEmpty(),
+  check('rol').exists().isIn(['admin', 'user', 'kelly']),
   (req, res, next) => validateResults(req, res, next)
 ];
 

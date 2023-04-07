@@ -17,10 +17,21 @@ const personaSchema = new mongoose.Schema({
   apellido2: {
     type: String
   },
+  email:{
+    type: String,
+    unique: true,
+    required: true
+  },
+  password:{
+    type: String,
+    required: true,
+    select: false // en false, no se mostrará la contraseña en las consultas
+  },
   rol: {
     type: String,
     enum: ['admin', 'user', 'kelly'],
-    default: 'user'
+    default: 'user',
+    required: true
   }
 }, { timestamps: true });
 

@@ -19,7 +19,7 @@ router.get('/:id', validationGetItem, getItem)
 /**
  * Crear un registro (item)
  */
-router.post("/", validationCreateItem, /**customHeader ,*/createItem) // método post para el envío de archivos 
+router.post("/", validationCreateItem, /**customHeader ,*/createItem) 
 
 /**
  * Actualizar un registro (item)
