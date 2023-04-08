@@ -1,11 +1,10 @@
 const express = require('express')
 const { getItems, getItem, createItem, deleteItem } = require('../controllers/imagenes')
 const router = express.Router() // invocar a el manejador Router
-// TODO: validar imagenes const { validationCreateItem } = require('../validators/imagenes')
 const uploadMiddleware = require('../utils/handleStorage') // configuración archivo y ruta (middleware)
 const validatorGetItem = require('../validators/imagenes')
 
-// TODO: http://localhost/imagenes GET, POST, DELETE, PUT
+// http://localhost/imagenes GET, POST, DELETE, PUT
 
 
 /**

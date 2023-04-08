@@ -5,11 +5,12 @@ const authMiddleware = require('../middleware/session')
 const { validationCreateItem, validationGetItem} = require('../validators/hoteles')
 const customHeader = require('../middleware/customHeader')
 
-// TODO: http://localhost:3001/hoteles GET, POST, DELETE, PUT
+// http://localhost:3001/hoteles GET, POST, DELETE, PUT
 
 /**
  * Lista los items
  */
+// TODO: si borramos el authMiddleware, no verificará si hay sesión iniciada (bearer token)
 router.get("/", authMiddleware, getItems) // middleware de session
 
 /**
