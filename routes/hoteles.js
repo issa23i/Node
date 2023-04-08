@@ -1,6 +1,7 @@
 const express = require('express')
 const { getItems, getItem, createItem, updateItem, deleteItem } = require('../controllers/hoteles')
 const router = express.Router() // invocar a el manejador Router
+const authMiddleware = require('../middleware/session')
 const { validationCreateItem, validationGetItem} = require('../validators/hoteles')
 const customHeader = require('../middleware/customHeader')
 
@@ -9,7 +10,7 @@ const customHeader = require('../middleware/customHeader')
 /**
  * Lista los items
  */
-router.get("/", getItems)
+router.get("/", authMiddleware, getItems) // middleware de session
 
 /**
  * Obtener un detalle (item)

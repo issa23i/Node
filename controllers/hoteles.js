@@ -10,8 +10,9 @@ const {handleHttpError} = require('../utils/handleError')
  */
 const getItems = async (req, res) => {
     try {
+        const user = req.user // saber quién está realizando la petición gracias a authMiddleware
         const data = await hotelModel.find({}) 
-        res.send({data})
+        res.send({ data, user}) // muestra los hoteles y la persona que los pidió
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_GET_ITEMS')
     }
