@@ -3,8 +3,8 @@ const router = express.Router() // invocar a el manejador Router
 const {  validationRegister, validationLogin } = require('../validators/auth')
 const { registerController, loginController } = require('../controllers/auth')
 
-// TODO: http://localhost:3001/api/auth/login
-// TODO: http://localhost:3001/api/auth/register
+//  http://localhost:3001/api/auth/login
+//  http://localhost:3001/api/auth/register
 
 
 /**
