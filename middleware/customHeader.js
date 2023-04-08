@@ -3,7 +3,7 @@ const customHeader = (req, res, next) => {
         // TODO: si hay que hacer api keys
         /** 
         const apiKey = req.headers.api_key
-        if(apiKey === 'HolaIsa'){
+        if(apiKey === 'api-publica-123'){
             next()
         } else {
             res.status(403)
