@@ -6,7 +6,7 @@ const { validationCreateItem, validationGetItem} = require('../validators/hotele
 const customHeader = require('../middleware/customHeader')
 
 // http://localhost:3001/hoteles GET, POST, DELETE, PUT
-
+// TODO: Colocar el authMiddleware a todas las rutas que queramos que el usuario esté autenticado
 /**
  * Lista los items
  */
