@@ -22,18 +22,16 @@ router.get('/:id', validationGetItem, authMiddleware, checkRol(['admin', 'kelly'
 /**
  * Crear un registro (item)
  */
-router.post('/', validationCreateItem, authMiddleware, checkRol(['admin', 'kelly']),/**customHeader ,*/ createItem);
+router.post('/', validationCreateItem, authMiddleware, checkRol(['admin']),/**customHeader ,*/ createItem);
 
 /**
  * Actualizar un registro (item)
- * // TODO: Sólo la misma kelly creada (persona), puede actualizar el registro, además del admin, validar esto
  */
-router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin', 'kelly']), updateItem);
+router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin']), updateItem);
 
 /**
  * Borrar un registro
- * // TODO: Sólo la misma kelly creada (persona), puede borrar su registro, además del admin, validar esto
  */
-router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin', 'kelly']), deleteItem);
+router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin']), deleteItem);
 
 module.exports = router;

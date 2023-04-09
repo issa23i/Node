@@ -1,6 +1,7 @@
 const { matchedData } = require('express-validator');
 const { kellyModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
+const tieneSello = require('../utils/handleSelloHotel')
 
 /**
  * Obtener una lista
@@ -40,6 +41,11 @@ const createItem = async (req, res) => {
   try {
     const body = matchedData(req); // recoge sólo los datos validados (carpeta validators)
     const data = await kellyModel.create(body);
+
+    // actualizar el sello del hotel con la puntuación de la kelly creada
+    const hotelId = data.hotel
+    tieneSello(hotelId)
+
     res.send({ data });
   } catch (error) {
     handleHttpError(res, 'ERROR_EN_CREATE_ITEM');
@@ -59,6 +65,11 @@ const updateItem = async (req, res) => {
       body, // devuelve el cuerpo (body)
       { new: true } // que devuelva actualizado, no el antiguo
     );
+
+    // actualizar el sello del hotel con la puntuación de la kelly actualizada
+    const hotelId = data.hotel
+    tieneSello(hotelId)
+
     res.send({ data });
   } catch (error) {
     handleHttpError(res, 'ERROR_EN_UPDATE_ITEM');
@@ -73,7 +84,12 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
-    const data = await kellyModel.deleteOne({ _id: id }); // borra el registro que coincida con el id
+    const data = await kellyModel.findOneAndDelete({ _id: id }); // borra el registro que coincida con el id
+    
+    // actualizar el sello del hotel borrando la puntuación de la kelly eliminada
+    const hotelId = data.hotel
+    tieneSello(hotelId)
+    
     res.send({ data });
   } catch (error) {
     handleHttpError(res, 'ERROR_EN_DELETE_ITEM');

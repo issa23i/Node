@@ -9,6 +9,7 @@ const checkRol = require('../middleware/rol')
 // http://localhost:3001/hoteles GET, POST, DELETE, PUT
 // TODO: Colocar el authMiddleware a todas las rutas que queramos que el usuario esté autenticado
 // TODO: Colocar los middleware authMiddleware y checkRol(['admin']) a las rutas que lo necesiten
+// TODO: Los hoteles sin sello no pueden aparecer en los listados, arreglar esto
 /**
  * Lista los items
  */
