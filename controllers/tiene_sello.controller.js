@@ -1,6 +1,8 @@
 const Kelly = require('../models/kelly.model');
 const Hotel = require('../models/hotel.model');
 
+// TODO: Comprobar, probar y usar este controlador
+
 exports.calculateTieneSello = async (req, res, next) => {
   const hotelId = req.params.id;
 

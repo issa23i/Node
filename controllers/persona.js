@@ -2,6 +2,8 @@ const { matchedData } = require('express-validator')
 const { personaModel } = require('../models')
 const {handleHttpError} = require('../utils/handleError')
 
+// TODO: Hacer algo más visual con los errores
+
 /**
  * Obtener una lista
  * @param {*} req 

@@ -35,7 +35,11 @@ const hotelSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Imagen',
     required: true
-  }]
+  }],
+  puntuacion_resenas: {
+    type: Number,
+    default: 0
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Hotel', hotelSchema);

@@ -40,6 +40,30 @@ const createItem = async (req, res) => {
   try {
     const body = matchedData(req);
     const data = await resenaModel.create(body);
+
+    /**
+     *     // Obtener el hotel asociado a la reseña
+    const hotel = await hotelModel.findById(body.hotel);
+
+    // Calcular la puntuación promedio de todas las reseñas del hotel, incluyendo la nueva reseña
+    const promedioPuntuacion = await resenaModel.aggregate([
+      {
+        $match: {
+          hotel: hotel._id
+        }
+      },
+      {
+        $group: {
+          _id: '$hotel',
+          promedioPuntuacion: { $avg: '$puntuacion' }
+        }
+      }
+    ]);
+
+    // Actualizar la puntuación del hotel con la nueva puntuación promedio
+    await hotelModel.updateOne({ _id: hotel._id }, { puntuacion_resenas: promedioPuntuacion[0].promedioPuntuacion });
+
+     */
     res.send({ data });
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_CREATE_ITEM');

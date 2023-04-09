@@ -23,16 +23,19 @@ router.get('/:id', validationGetItem, getItem)
 /**
  * Crear un registro (item)
  */
+// TODO: Verificar que existe el id de cada imagen
 router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']),/**customHeader ,*/createItem) 
 
 /**
  * Actualizar un registro (item)
  */
+// TODO: ,Verificar que el id de las habitaciones existe
 router.put('/:id', validationGetItem, validationCreateItem, updateItem) // hace uso de dos middlewares
 
 /**
  * Borrar un registro
  */
+// TODO: Borrar en cascada las habitaciones
 router.delete('/:id', validationGetItem, deleteItem)
 
 
