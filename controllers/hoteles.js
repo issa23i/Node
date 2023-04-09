@@ -12,6 +12,7 @@ const getItems = async (req, res) => {
     try {
         // TODO: si queremos quitar user, podemos sólo con comentar const user y la variabel user en el send
         // TODO: si borramos lo anterior, borrar también en el middleware session el const user y req.user
+        // TODO: comprobar si hay más sitios donde nos interesa usar el user en la request (tres siguientes líneas)
         const user = req.user // saber quién está realizando la petición gracias a authMiddleware
         const data = await hotelModel.find({}) 
         res.send({ data, user}) // muestra los hoteles y la persona que los pidió

@@ -1,6 +1,8 @@
 const { matchedData } = require('express-validator');
-const { resenaModel } = require('../models');
+const { resenaModel, hotelModel, reservaModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
+const setPuntuacionHotel = require('../utils/handlePuntuacionHotel')
+
 
 /**
  * Obtener una lista de reseñas
@@ -41,31 +43,19 @@ const createItem = async (req, res) => {
     const body = matchedData(req);
     const data = await resenaModel.create(body);
 
-    /**
-     *     // Obtener el hotel asociado a la reseña
-    const hotel = await hotelModel.findById(body.hotel);
+    // Obtener el objeto de la reserva actual
+    const reservaId = data.reserva
+    const reserva = await reservaModel.findById(reservaId);
 
-    // Calcular la puntuación promedio de todas las reseñas del hotel, incluyendo la nueva reseña
-    const promedioPuntuacion = await resenaModel.aggregate([
-      {
-        $match: {
-          hotel: hotel._id
-        }
-      },
-      {
-        $group: {
-          _id: '$hotel',
-          promedioPuntuacion: { $avg: '$puntuacion' }
-        }
-      }
-    ]);
+    // Obtener el ID del hotel de la reserva
+    const hotelId = reserva.hotel;
 
-    // Actualizar la puntuación del hotel con la nueva puntuación promedio
-    await hotelModel.updateOne({ _id: hotel._id }, { puntuacion_resenas: promedioPuntuacion[0].promedioPuntuacion });
+    // Actualizar puntuación del hotel teniendo en cuenta todas las reseñas, incluída la última
+    setPuntuacionHotel(hotelId)
 
-     */
     res.send({ data });
   } catch (e) {
+    console.log(e)
     handleHttpError(res, 'ERROR_EN_CREATE_ITEM');
   }
 };
@@ -83,6 +73,17 @@ const updateItem = async (req, res) => {
       body, // devuelve el cuerpo (body)
       { new: true } // que devuelva actualizado, no el antiguo
     );
+
+    // Obtener el objeto de la reserva actual
+    const reservaId = data.reserva
+    const reserva = await reservaModel.findById(reservaId);
+
+    // Obtener el ID del hotel de la reserva
+    const hotelId = reserva.hotel;
+
+    // Actualizar puntuación del hotel teniendo en cuenta todas las reseñas, incluída esta actualización
+    await setPuntuacionHotel(hotelId);
+
     res.send({ data });
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_UPDATE_ITEM');
@@ -97,7 +98,19 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
-    const data = await resenaModel.deleteOne({ _id: id });
+    const data = await resenaModel.findOneAndDelete({ _id: id });
+
+    // Obtener el objeto de la reserva actual
+    const reservaId = data.reserva
+    const reserva = await reservaModel.findById(reservaId);
+
+    // Obtener el ID del hotel de la reserva
+    const hotelId = reserva.hotel;
+
+    // Actualizar puntuación del hotel teniendo en cuenta todas las reseñas, incluída esta actualización
+    await setPuntuacionHotel(hotelId);
+
+
     res.send({ data });
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_DELETE_ITEM');
