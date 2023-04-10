@@ -2,7 +2,7 @@ const { check } = require('express-validator');
 const validateResults = require('../utils/handleValidator');
 
 const validationSearchParams = [
-  check('city').exists().notEmpty(),
+  check('ciudad').exists().notEmpty(),
   check('checkIn').exists().notEmpty().isDate().isAfter(), // mayor que fecha actual
   check('checkOut').exists().notEmpty().isDate().custom((value, {req}) => {
     if (value <= req.body.checkIn) {
