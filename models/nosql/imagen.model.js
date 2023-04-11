@@ -7,7 +7,7 @@ const imagenSchema = new mongoose.Schema({
   },
   filename: {
     type: String,
-    required: true // TODO: cambiar si se tiene que prescindir
+    required: true 
   }
 }, { timestamps: true });
 

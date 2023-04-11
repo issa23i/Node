@@ -21,11 +21,6 @@ const hotelSchema = new mongoose.Schema({
     type: [String],
     required: true
   },
-  habitaciones: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Habitacion',
-    required: true
-  }],
   tieneSello: {
     type: Boolean,
     default: false,

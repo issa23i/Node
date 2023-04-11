@@ -7,7 +7,6 @@ const validationCreateItem = [
     check("ciudad").exists().notEmpty(),
     check("descripcion").exists().notEmpty(),
     check("servicios").exists().notEmpty().isArray(),
-    check("habitaciones").exists().isArray(),
     check("tieneSello").exists().notEmpty().isBoolean(),
     check("imagenes").exists().notEmpty().isArray(),
     check("puntuacion_resenas").optional().isNumeric().withMessage('El campo puntuacion_resenas debe ser numérico'),
