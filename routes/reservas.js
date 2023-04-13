@@ -19,9 +19,7 @@ router.get('/:id', validationGetItem, getItem);
 /**
  * Crea un registro (item)
  */
-// TODO: Al crear la reserva, validar que el id hotel e id de habitaciones existen y habitación pertenece al hotel
-// TODO: Al crear la reserva, debe validar que esté disponible el hotel en estas fechas (controlador disponibilidad.js)
-// TODO: Al crear la reserva, crear el campo precio que calcule, a partir de precio_habitacion
+// TODO: Al crear la reserva, validar que el id hotel e id de habitaciones existen 
 router.post("/", validationCreateItem, /**customHeader ,*/ createItem);
 
 /**

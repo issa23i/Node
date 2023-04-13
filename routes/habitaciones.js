@@ -18,7 +18,6 @@ router.get('/:id', validationGetItem, getItem)
 /**
  * Crear un registro (item)
  */
-// TODO: Verficar que existe la imagen (id)
 router.post("/", validationCreateItem, createItem)
 
 /**

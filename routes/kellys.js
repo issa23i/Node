@@ -15,8 +15,7 @@ router.get('/', authMiddleware, checkRol(['admin']), getItems);
 
 /**
  * Obtener un detalle (item)
- * // TODO: Sólo la misma kelly creada (persona), puede ver su detalle, además del admin, hacer esta validación
- */
+ * 
 router.get('/:id', validationGetItem, authMiddleware, checkRol(['admin', 'kelly']), getItem);
 
 /**

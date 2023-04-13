@@ -7,7 +7,6 @@ const {buscar, buscarEnHotel} = require('../controllers/buscar')
 
 router.get('/', validationSearchParams, buscar);
 
-// TODO: Implantar la función buscarEnHotel
 router.get('/:id', validationSearchParams, buscarEnHotel)
 
 module.exports = router
