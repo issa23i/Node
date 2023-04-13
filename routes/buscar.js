@@ -5,7 +5,6 @@ const {buscar, buscarEnHotel} = require('../controllers/buscar')
 
 // http://localhost:3001/api/buscar
 
-// TODO: Implantar la función buscar
 router.get('/', validationSearchParams, buscar);
 
 // TODO: Implantar la función buscarEnHotel

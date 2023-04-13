@@ -24,7 +24,7 @@ router.get('/:id', validationGetItem, getItem)
 /**
  * Crear un registro (item)
  */
-// TODO: Verificar que existe el id de cada imagen
+// TODO: Verificar que existe el id de cada imagen (agregando una validación)
 router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']),/**customHeader ,*/createItem) 
 
 /**
