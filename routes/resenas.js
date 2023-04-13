@@ -16,7 +16,7 @@ router.get("/", getItems)
 /**
  * Obtener un detalle (item)
  */
-router.get('/:id', validationGetResena, getItem)
+router.get('/:id', validationGetResena, authMiddleware, getItem)
 
 /**
  * Crear un registro (item)

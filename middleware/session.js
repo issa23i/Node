@@ -18,6 +18,8 @@ const authMiddleware = async ( req, res, next ) => {
             return
         }
 
+        // TODO: Comentar las siguientes dos línes si NO nos interesa sabeF qué usuario realiza la consulta
+                // para usar, hay que añadir al controlador const user = req.user; y en la respuesta res.send({ data, user })
         const user = await personaModel.findById(dataToken._id) // para saber la persona que está en la sesion  
         req.user = user // inyectamos en la petición al usuario
 

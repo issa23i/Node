@@ -26,8 +26,17 @@ const getItems = async (req, res) => {
 const getItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
+
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+
+    // Obtener el objeto de la reserva actual
+    const reservaId = data.reserva
+    const reserva = await reservaModel.findById(reservaId);
+
     const data = await resenaModel.findById(id)
-    res.send({ data });
+    res.send({ data, user }); // <-- Devolver también el objeto de usuario autenticado
+
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_GET_ITEM');
   }
@@ -40,12 +49,23 @@ const getItem = async (req, res) => {
  */
 const createItem = async (req, res) => {
   try {
+    
     const body = matchedData(req);
+
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+
     const data = await resenaModel.create(body);
 
     // Obtener el objeto de la reserva actual
     const reservaId = data.reserva
     const reserva = await reservaModel.findById(reservaId);
+
+    // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+        // gracias al middleware session
+    if (reserva.cliente.toString() !== user._id.toString()) {
+      return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
+    }
 
     // Obtener el ID del hotel de la reserva
     const hotelId = reserva.hotel;
@@ -53,7 +73,7 @@ const createItem = async (req, res) => {
     // Actualizar puntuación del hotel teniendo en cuenta todas las reseñas, incluída la última
     setPuntuacionHotel(hotelId)
 
-    res.send({ data });
+    res.send({ data, user });// <-- Devolver también el objeto de usuario autenticado
   } catch (e) {
     console.log(e)
     handleHttpError(res, 'ERROR_EN_CREATE_ITEM');
@@ -68,6 +88,17 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
   try {
     const { id, ...body } = matchedData(req);
+
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+    
+    // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+        // gracias al middleware session
+        if (reserva.cliente.toString() !== user._id.toString()) {
+          return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
+        }
+
+
     const data = await resenaModel.findOneAndUpdate(
       { _id: id }, // busca por id,
       body, // devuelve el cuerpo (body)
@@ -84,7 +115,7 @@ const updateItem = async (req, res) => {
     // Actualizar puntuación del hotel teniendo en cuenta todas las reseñas, incluída esta actualización
     await setPuntuacionHotel(hotelId);
 
-    res.send({ data });
+    res.send({ data, user });// <-- Devolver también el objeto de usuario autenticado
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_UPDATE_ITEM');
   }
@@ -97,8 +128,18 @@ const updateItem = async (req, res) => {
  */
 const deleteItem = async (req, res) => {
   try {
+    
     const { id } = matchedData(req);
     const data = await resenaModel.findOneAndDelete({ _id: id });
+       
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+
+    // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+        // gracias al middleware session
+        if (reserva.cliente.toString() !== user._id.toString()) {
+          return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
+        }
 
     // Obtener el objeto de la reserva actual
     const reservaId = data.reserva
@@ -111,7 +152,7 @@ const deleteItem = async (req, res) => {
     await setPuntuacionHotel(hotelId);
 
 
-    res.send({ data });
+    res.send({ data, user }); // <-- Devolver también el objeto de usuario autenticado
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_DELETE_ITEM');
   }

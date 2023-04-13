@@ -6,13 +6,9 @@ const buscar = async (req, res) => {
   try {
     const { ciudad, checkIn, checkOut, viajeros } = req.body;
     
+    // se convierte a fecha
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
-
-    console.log(ciudad)
-    console.log(checkIn)
-    console.log(checkOut)
-    console.log(viajeros)
 
     // Buscar hoteles que coincidan con la ciudad
     const hoteles = await hotelModel.find({ ciudad });
@@ -20,12 +16,23 @@ const buscar = async (req, res) => {
     // Crear un array de objetos con la información de los hoteles disponibles
     const hotelesDisponibles = [];
 
-    // Iterar sobre cada hotel
+    // Iterar sobre cada hotel que coincida con la ciudad buscada
     for (const hotel of hoteles) {
-      console.log(hotel)
+
       // Obtener las habitaciones del hotel que tienen suficientes plazas para el número de viajeros
+      // aggregate => msql GROUP BY  
       const habitacionesDisponibles = await habitacionModel.aggregate([
+
+        // buscar las habitaciones que estén en hotel con Query Language
+        // y que tengan suficientes plazas para el número de viajeros que se busca.
+        // match , gte => >=
         { $match: { hotel: hotel._id, num_plazas: { $gte: viajeros } } },
+
+          // buscar reservas que ya existan en esas habitaciones en las fechas que se buscan. 
+          // Esto lo hace usando el modelo de reserva ("reservas") 
+          // y especificando que sólo se buscan las reservas que tengan la misma habitación 
+          // que la que se está analizando en ese momento
+          // lookup => mysql INNER JOIN
         {
           $lookup: {
             from: "reservas",
@@ -66,11 +73,14 @@ const buscar = async (req, res) => {
             as: "reservas",
           },
         },
+          // filtrar sólo las habitaciones que no tengan reservas 
         {
           $match: {
             "reservas._id": { $exists: false },
           },
         },
+          // agrupar las habitaciones por el número de plazas 
+          // y crear un objeto que contenga todas las habitaciones que tengan el mismo número de plazas
         {
           $group: {
             _id: "$num_plazas",
@@ -83,6 +93,8 @@ const buscar = async (req, res) => {
             totalPlazas: { $sum: "$num_plazas" },
           },
         },
+          // filtrar sólo las habitaciones cuyo número total de plazas 
+          // sea suficiente para el número de viajeros que se busca
         {
           $match: {
             totalPlazas: { $gte: viajeros },
@@ -95,6 +107,7 @@ const buscar = async (req, res) => {
       // Añadir el hotel y las habitaciones disponibles al array
       if (habitacionesDisponibles.length > 0) {
         hotelesDisponibles.push({
+          // se crea un objeto para recoger el hotel y las habitaciones del mismo disponibles
           hotel: {
             _id: hotel._id,
             nombre: hotel.nombre,
