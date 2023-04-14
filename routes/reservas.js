@@ -19,7 +19,6 @@ router.get('/:id', validationGetItem, getItem);
 /**
  * Crea un registro (item)
  */
-// TODO: Al crear la reserva, validar que el id hotel e id de habitaciones existen 
 router.post("/", validationCreateItem, /**customHeader ,*/ createItem);
 
 /**

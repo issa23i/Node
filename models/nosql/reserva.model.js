@@ -23,11 +23,11 @@ const reservaSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  habitaciones: [{
+  habitacion: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Habitacion',
     required: true
-  }],
+  },
   aceptada: {
     type: Boolean,
     default: false
