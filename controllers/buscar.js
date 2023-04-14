@@ -1,7 +1,12 @@
 const {handleHttpError} = require("../utils/handleError");
 const {hotelModel, habitacionModel} = require("../models");
 
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const buscar = async (req, res) => {
   try {
     const { ciudad, checkIn, checkOut, viajeros } = req.body;
@@ -16,19 +21,44 @@ const buscar = async (req, res) => {
 
     // Crear un array de objetos con la información de los hoteles disponibles
     const reservas = [];
-
     
     for (const hotel of hoteles) {
-
-      
+   
       const habitacionesDisponibles = await habitacionModel.aggregate([
 
         // Obtener las habitaciones del hotel que tienen suficientes plazas 
         { $match: { hotel: hotel._id, num_plazas: { $eq: viajeros }} },
-         
+        // filtrar las reservas que se superponen con las fechas especificadas en la consulta
+        {
+          $lookup: {
+            from: "reservas",
+            let: {
+              habitacionId: "$_id",
+              checkIn: checkInDate,
+              checkOut: checkOutDate,
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ["$habitacion", "$$habitacionId"] }, // igual id habitación
+                      { $lte: ["$fechaCheckin", "$$checkOut"] }, // fecha checkin reserva menor que checkOut búsqueda
+                      { $gte: ["$fechaCheckout", "$$checkIn"] }, // fecha checkout reserva menor que checkIn búsqueda
+                      { $eq: ["$aceptada", true] }, // que su estado sea aceptada
+                    ],
+                  },
+                },
+              },
+              // se cuentan las reservas
+              { $count: "count" },
+            ],
+            as: "reservas",
+          },
+        },
+        //  Si el número de reservas supera 0, significa que la habitación ya está reservada
+        { $match: { reservas: { $size: 0 } } },
       ]);
-
-
 
       if (habitacionesDisponibles.length > 0) {
        
@@ -41,12 +71,10 @@ const buscar = async (req, res) => {
           fechaCheckin: checkInDate,
           fechaCheckout: checkOutDate,
           numPlazas : viajeros,
-          habitacion: habitacion._id
+          habitacion: habitacion._id,
+          aceptada: false
         });
-        })
-
-
-        
+        }) 
       }
     }
     
@@ -58,6 +86,13 @@ const buscar = async (req, res) => {
   }
 };
 
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const buscarEnHotel = async (req, res) => {
   try {
     req = matchedData(req);
@@ -83,7 +118,6 @@ const buscarEnHotel = async (req, res) => {
     return;
   }
 };
-
 
 
 module.exports = { buscar, buscarEnHotel };
