@@ -72,11 +72,17 @@ const buscar = async (req, res) => {
             fecha_inicio: { $lte: checkInDate }
           });
 
-          // Calcular el precio total por noche
-          const precioTotalPorNoche = preciosPorNoche.reduce((precioTotal, precioPorNoche) => {
-            return precioTotal + (numNoches * precioPorNoche.precio);
-          }, 0);
+          // si encuentra varios objetos precioHabitacion, recoge el más reciente
+          const precioMasReciente = preciosPorNoche.reduceRight((precioMasReciente, precioPorNoche) => {
+            if (!precioMasReciente) {
+              return precioPorNoche;
+            }
+            return precioPorNoche.createdAt > precioMasReciente.createdAt ? precioPorNoche : precioMasReciente;
+          });
+          
+          const precioTotalPorNoche = numNoches * precioMasReciente.precio;
 
+          console.log(precioTotalPorNoche, 'precio total por noche')
           reservas.push({
           // el cliente que está realizando la consulta es el que reserva
           cliente:user._id,
