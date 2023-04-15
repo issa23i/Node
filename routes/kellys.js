@@ -15,7 +15,7 @@ router.get('/', authMiddleware, checkRol(['admin']), getItems);
 
 /**
  * Obtener un detalle (item)
- * 
+ * */
 router.get('/:id', validationGetItem, authMiddleware, checkRol(['admin', 'kelly']), getItem);
 
 /**

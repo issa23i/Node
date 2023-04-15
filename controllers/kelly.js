@@ -25,8 +25,13 @@ const getItems = async (req, res) => {
 const getItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
-    const data = await kellyModel.findById(id);
-    res.send({ data });
+    const user = req.user
+    if(user.rol === 'admin' || id === user.id){
+      const data = await kellyModel.findById(id);
+      res.send({ data });
+    } else {
+      res.status(403).send({ message: "No tiene permisos para acceder a este recurso" });
+    }
   } catch (error) {
     handleHttpError(res, 'ERROR_EN_GET_ITEM');
   }
@@ -58,22 +63,28 @@ const createItem = async (req, res) => {
  * @param {*} res 
  */
 const updateItem = async (req, res) => {
-  try {
-    const { id, ...body } = matchedData(req); // recoge id y lo que sobra en body {id} {body}
-    const data = await kellyModel.findOneAndUpdate(
-      { _id: id }, // busca por id,
-      body, // devuelve el cuerpo (body)
-      { new: true } // que devuelva actualizado, no el antiguo
-    );
-
-    // actualizar el sello del hotel con la puntuación de la kelly actualizada
-    const hotelId = data.hotel
-    tieneSello(hotelId)
-
-    res.send({ data });
-  } catch (error) {
-    handleHttpError(res, 'ERROR_EN_UPDATE_ITEM');
-  }
+  const user = req.user
+    if(user.rol === 'admin' || id === user.id){
+      try {
+        const { id, ...body } = matchedData(req); // recoge id y lo que sobra en body {id} {body}
+        const data = await kellyModel.findOneAndUpdate(
+          { _id: id }, // busca por id,
+          body, // devuelve el cuerpo (body)
+          { new: true } // que devuelva actualizado, no el antiguo
+        );
+    
+        // actualizar el sello del hotel con la puntuación de la kelly actualizada
+        const hotelId = data.hotel
+        tieneSello(hotelId)
+    
+        res.send({ data });
+      } catch (error) {
+        handleHttpError(res, 'ERROR_EN_UPDATE_ITEM');
+      }
+    } else {
+      res.status(403).send({ message: "No tiene permisos para acceder a este recurso" });
+    }
+ 
 };
 
 /**
@@ -84,6 +95,9 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
+    const user = req.user
+    if(user.rol === 'admin' || id === user.id){
+      
     const data = await kellyModel.findOneAndDelete({ _id: id }); // borra el registro que coincida con el id
     
     // actualizar el sello del hotel borrando la puntuación de la kelly eliminada
@@ -91,6 +105,9 @@ const deleteItem = async (req, res) => {
     tieneSello(hotelId)
     
     res.send({ data });
+    } else {
+      res.status(403).send({ message: "No tiene permisos para acceder a este recurso" });
+    }
   } catch (error) {
     handleHttpError(res, 'ERROR_EN_DELETE_ITEM');
   }
