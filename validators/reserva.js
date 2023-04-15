@@ -8,6 +8,7 @@ const validationCreateItem = [
   check('fechaCheckout').exists().notEmpty().isISO8601(),
   check('numPlazas').exists().notEmpty().isInt({ min: 1 }),
   check('habitacion').exists().notEmpty().isMongoId(),
+  check('precioTotal').exists().notEmpty().isInt(),
   check('aceptada').exists().isBoolean(),
   (req, res, next) => validateResults(req, res, next)
 ];

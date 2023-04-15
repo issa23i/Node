@@ -28,6 +28,10 @@ const reservaSchema = new mongoose.Schema({
     ref: 'Habitacion',
     required: true
   },
+  precioTotal: {
+    type: Number,
+    required: true
+  },
   aceptada: {
     type: Boolean,
     default: false

@@ -1,5 +1,5 @@
 const {handleHttpError} = require("../utils/handleError");
-const {hotelModel, habitacionModel, precioHabitacionModel} = require("../models");
+const {hotelModel, habitacionModel} = require("../models");
 
 /**
  * 
@@ -62,21 +62,7 @@ const buscar = async (req, res) => {
 
       if (habitacionesDisponibles.length > 0) {
        
-        // Calcular el número de noches en el rango de fechas (dado en miliseg)
-        const numNoches = ( checkOutDate.getTime() - checkInDate.getTime() ) / 1000 / 60 / 60 / 24;
-
-        for (const habitacion of habitacionesDisponibles) {
-          // Obtener los precios por noche para la habitación y rango de fechas
-          const preciosPorNoche = await precioHabitacionModel.find({
-            habitacion: habitacion._id,
-            fecha_inicio: { $lte: checkInDate }
-          });
-
-          // Calcular el precio total por noche
-          const precioTotalPorNoche = preciosPorNoche.reduce((precioTotal, precioPorNoche) => {
-            return precioTotal + (numNoches * precioPorNoche.precio);
-          }, 0);
-
+        habitacionesDisponibles.map(habitacion => {
           reservas.push({
           // el cliente que está realizando la consulta es el que reserva
           cliente:user._id,
@@ -86,10 +72,9 @@ const buscar = async (req, res) => {
           fechaCheckout: checkOutDate,
           numPlazas : viajeros,
           habitacion: habitacion._id,
-          aceptada: false,
-          precioTotal : precioTotalPorNoche,
+          aceptada: false
         });
-        }
+        }) 
       }
     }
     
