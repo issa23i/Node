@@ -3,6 +3,8 @@ const { getItems, getItem, createItem, deleteItem } = require('../controllers/im
 const router = express.Router() // invocar a el manejador Router
 const uploadMiddleware = require('../utils/handleStorage') // configuración archivo y ruta (middleware)
 const validatorGetItem = require('../validators/imagenes')
+const authMiddleware = require('../middleware/session')
+const checkRol = require('../middleware/rol')
 
 // http://localhost:3001/imagenes GET, POST, DELETE, PUT
 
@@ -10,7 +12,7 @@ const validatorGetItem = require('../validators/imagenes')
 /**
  * Subida de archivo con post item
  */ 
-router.post('/',  /** validationCreateItem,*/ uploadMiddleware.single('myfile'), createItem) // método post para el envío de archivos 
+router.post('/', authMiddleware, checkRol(['admin']), /** validationCreateItem,*/ uploadMiddleware.single('myfile'), createItem) // método post para el envío de archivos 
 
 /**
  * Listar items
@@ -25,6 +27,6 @@ router.get("/:id", validatorGetItem, getItem)
 /**
  * Borrar un item
  */
-router.delete('/:id', validatorGetItem, deleteItem)
+router.delete('/:id', validatorGetItem, authMiddleware, checkRol(['admin']), deleteItem)
 
 module.exports = router

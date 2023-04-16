@@ -26,12 +26,12 @@ router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']),/**cu
 /**
  * Actualizar un registro (item)
  */
-router.put('/:id', validationGetItem, validationCreateItem, updateItem) // hace uso de dos middlewares
+router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin']), updateItem) // hace uso de dos middlewares
 
 /**
  * Borrar un registro
  */
-router.delete('/:id', validationGetItem, deleteItem)
+router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin']), deleteItem)
 
 
 module.exports = router

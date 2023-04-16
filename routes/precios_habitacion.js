@@ -19,16 +19,16 @@ router.get('/:id', getPrecioHabitacionValidation, getItem)
 /**
  * Crear un registro (item)
  */
-router.post("/", createPrecioHabitacionValidation, /**customHeader ,*/ createItem)
+router.post("/", createPrecioHabitacionValidation, authMiddleware, checkRol(['admin']), /**customHeader ,*/ createItem)
 
 /**
  * Actualizar un registro (item)
  */
-router.put('/:id', getPrecioHabitacionValidation, createPrecioHabitacionValidation, updateItem)
+router.put('/:id', getPrecioHabitacionValidation, createPrecioHabitacionValidation, authMiddleware, checkRol(['admin']), updateItem)
 
 /**
  * Borrar un registro
  */
-router.delete('/:id', getPrecioHabitacionValidation, deleteItem)
+router.delete('/:id', getPrecioHabitacionValidation, authMiddleware, checkRol(['admin']), deleteItem)
 
 module.exports = router
