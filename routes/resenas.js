@@ -26,7 +26,7 @@ router.post("/", validationCreateResena, authMiddleware, checkRol(['user', 'admi
 /**
  * Actualizar un registro (item)
  */
-// TODO: Una resena sólo debe poder actualizarse por el usuario que la creó o el admin, hay que validar esto
+// Una resena sólo debe poder actualizarse por el usuario que la creó o el admin, hay que validar esto
 router.put('/:id', validationGetResena, validationCreateResena, authMiddleware, checkRol(['user', 'admin']), updateItem)
 
 /**

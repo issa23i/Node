@@ -55,17 +55,30 @@ const createItem = async (req, res) => {
     // con el middleware session hemos recogido al usuario que está realizando la petición
     const user = req.user;
 
-    const data = await resenaModel.create(body);
-
     // Obtener el objeto de la reserva actual
-    const reservaId = data.reserva
+    const reservaId = body.reserva
     const reserva = await reservaModel.findById(reservaId);
+    console.log(user._id.toString())
+    console.log(reserva.cliente.toString() !== user._id.toString())
+    console.log(reserva)
 
+    
     // Verificar que el usuario autenticado sea el mismo que realizó la reserva
         // gracias al middleware session
     if (reserva.cliente.toString() !== user._id.toString()) {
       return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
     }
+
+    // Verificar si el cliente ya hizo una reseña de su reserva, no puede crear otra
+    const resena = await resenaModel.findOne({ reserva: reservaId });
+    console.log(resena + ' este es el de la resena')
+    if (resena) {
+      return res.status(403).json({ error: 'Ya existe una reseña para esa estancia' });
+    }
+    
+    // crear la reseña
+    const data = await resenaModel.create(body);
+
 
     // Obtener el ID del hotel de la reserva
     const hotelId = reserva.hotel;
@@ -88,13 +101,17 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
   try {
     const { id, ...body } = matchedData(req);
-
     // con el middleware session hemos recogido al usuario que está realizando la petición
     const user = req.user;
     
-    // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+
+        // Obtener el objeto de la reserva actual
+        const reservaId = body.reserva
+        const reserva = await reservaModel.findById(reservaId);
+    
+        // Verificar que el usuario autenticado sea el mismo que realizó la reserva
         // gracias al middleware session
-        if (reserva.cliente.toString() !== user._id.toString()) {
+        if (reserva.cliente.toString() !== user._id.toString() && user.rol !== 'admin') {
           return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
         }
 
@@ -105,9 +122,7 @@ const updateItem = async (req, res) => {
       { new: true } // que devuelva actualizado, no el antiguo
     );
 
-    // Obtener el objeto de la reserva actual
-    const reservaId = data.reserva
-    const reserva = await reservaModel.findById(reservaId);
+
 
     // Obtener el ID del hotel de la reserva
     const hotelId = reserva.hotel;
@@ -135,15 +150,16 @@ const deleteItem = async (req, res) => {
     // con el middleware session hemos recogido al usuario que está realizando la petición
     const user = req.user;
 
-    // Verificar que el usuario autenticado sea el mismo que realizó la reserva
-        // gracias al middleware session
-        if (reserva.cliente.toString() !== user._id.toString()) {
-          return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
-        }
-
     // Obtener el objeto de la reserva actual
     const reservaId = data.reserva
     const reserva = await reservaModel.findById(reservaId);
+
+    // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+        // gracias al middleware session
+        if (reserva.cliente.toString() !== user._id.toString() && user.rol !== 'admin') {
+          return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
+        }
+
 
     // Obtener el ID del hotel de la reserva
     const hotelId = reserva.hotel;
