@@ -14,7 +14,9 @@ const getItems = async (req, res) => {
         // TODO: si borramos lo anterior, borrar también en el middleware session el const user y req.user
         // TODO: comprobar si hay más sitios donde nos interesa usar el user en la request (tres siguientes líneas)
         // const user = req.user // saber quién está realizando la petición gracias a authMiddleware
-        const data = await hotelModel.find({}) 
+        
+        // Sólo se muestran los hoteles que tienen sello
+        const data = await hotelModel.find({ tieneSello: true })
         res.send({ data/**, user */}) // muestra los hoteles y la persona que los pidió
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_GET_ITEMS')
