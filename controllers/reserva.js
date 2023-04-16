@@ -23,10 +23,26 @@ const getItems = async (req, res) => {
  */
 const getItem = async (req, res) => {
   try {
-    req = matchedData(req);
-    const { id } = req;
-    const data = await reservaModel.findById(id);
-    res.send({ data });
+    const { id } = matchedData(req);
+    
+    
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+    const reserva = await reservaModel.findById(id);
+    
+    console.log(reserva.cliente )
+    console.log(user._id)
+    console.log('hola')
+    if (reserva) {
+      const esCliente = reserva.cliente.toString() === user._id.toString()
+      
+      if (!esCliente){
+        res.status(403).send({ message: 'No puede visualizar una reserva que no pertenece al cliente' });
+      } else {
+        res.send({ reserva });
+      }
+    }
+    
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_GET_ITEM');
   }
