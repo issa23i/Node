@@ -60,6 +60,8 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
     try{
         const {id, ...body} = matchedData(req) // recoge id y lo que sobra en body {id} {body}
+        console.log(id)
+        console.log(body)
         const data = await hotelModel.findOneAndUpdate(
             {_id: id}, // busca por id,
             body, // devuelve el cuerpo (body)

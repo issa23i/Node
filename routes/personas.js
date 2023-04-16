@@ -1,7 +1,7 @@
 const express = require('express')
 const { getItems, getItem, createItem, updateItem, deleteItem } = require('../controllers/persona')
 const router = express.Router()
-const { validationCreateItem, validationGetItem } = require('../validators/persona')
+const { validationCreateItem, validationGetItem, validationUpdateItem } = require('../validators/persona')
 const customHeader = require('../middleware/customHeader')
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
@@ -11,12 +11,14 @@ const checkRol = require('../middleware/rol')
 /**
  * Lista los items
  */
-router.get("/", authMiddleware, checkRol(['admin']), getItems)
+// No se permite en ningún caso listar los usuarios
+//router.get("/", authMiddleware, checkRol(['admin']), getItems)
 
 /**
  * Obtener un detalle (item)
  */
-router.get('/:id', validationGetItem, authMiddleware, checkRol(['admin', 'user']), getItem)
+// Sólo el propio usuario puede ver su detalle (controlador getItem)
+router.get('/:id', validationGetItem, authMiddleware, checkRol([ 'user', 'admin']), getItem)
 
 /**
  * Crear un registro (item)
@@ -26,7 +28,8 @@ router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']), /**c
 /**
  * Actualizar un registro (item)
  */
-router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin']), updateItem)
+// Para actualizar los datos del usuario se usará el controlador update en auth.js
+//router.put('/:id', validationGetItem, validationUpdateItem, authMiddleware, checkRol(['user', 'admin']), updateItem)
 
 /**
  * Borrar un registro

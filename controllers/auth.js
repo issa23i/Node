@@ -68,5 +68,46 @@ const loginController = async (req, res) => {
     }
 }
 
+const updateItem = async (req, res) => {
+    try{
+        const { ...body} = matchedData(req) // recoge  body  {body}
+        const id = req.params.id;
 
-module.exports = {registerController, loginController}
+        const password = await encrypt(body.password)
+        body.password = password
+        // con el middleware session hemos recogido al usuario que está realizando la petición
+        const user = req.user;
+
+        const email = body.email
+        const persona = await personaModel
+            .findOne({email}) // encontrar al usuario con ese email
+            .select('_id nombre email password rol') // selecciona los campos que necesitamos 
+
+            
+        console.log(persona.email)
+        if (! persona ) {
+            handleHttpError(res, 'ERROR_DE_AUTENTICACION', 401) // Código no autorización
+            return
+        }
+
+        // Sólo la persona logueada puede modificar sus datos
+        if(user._id.toString() !== persona._id.toString()){
+            handleHttpError(res, 'FORBIDDEN', 403) // Código no autorización
+            return
+        }
+
+        const data = await personaModel.findOneAndUpdate(
+            {_id: id}, // busca por id,
+            body, // devuelve el cuerpo (body)
+            {new: true} // que devuelva actualizado, no el antiguo
+        ) 
+        data.set("password", undefined, {strict: false}) // hacer que la data no contenga el password
+        
+        res.send({data})
+    } catch (e) {
+        console.log(e)
+        handleHttpError(res, 'ERROR_EN_UPDATE_ITEM')
+    }
+}
+
+module.exports = {registerController, loginController, updateItem}

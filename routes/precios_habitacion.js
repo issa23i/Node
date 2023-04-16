@@ -3,6 +3,8 @@ const { getItems, getItem, createItem, updateItem, deleteItem } = require('../co
 const router = express.Router()
 const { createPrecioHabitacionValidation, getPrecioHabitacionValidation } = require('../validators/precio_habitacion')
 const customHeader = require('../middleware/customHeader')
+const authMiddleware = require('../middleware/session')
+const checkRol = require('../middleware/rol')
 
 // http://localhost:3001/precio_habitacion GET, POST, DELETE, PUT
 

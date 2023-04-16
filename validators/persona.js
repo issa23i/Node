@@ -12,9 +12,15 @@ const validationCreateItem = [
   (req, res, next) => validateResults(req, res, next)
 ];
 
+const validationUpdateItem = [
+  check('email').exists().isEmail(),
+  check('password').exists().notEmpty(),
+  (req, res, next) => validateResults(req, res, next)
+];
+
 const validationGetItem = [
   check('id').exists().notEmpty().isMongoId(),
   (req, res, next) => validateResults(req, res, next)
 ];
 
-module.exports = { validationCreateItem, validationGetItem };
+module.exports = { validationCreateItem, validationGetItem, validationUpdateItem };

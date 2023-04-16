@@ -30,9 +30,6 @@ const getItem = async (req, res) => {
     const user = req.user;
     const reserva = await reservaModel.findById(id);
     
-    console.log(reserva.cliente )
-    console.log(user._id)
-    console.log('hola')
     if (reserva) {
       const esCliente = reserva.cliente.toString() === user._id.toString()
       
