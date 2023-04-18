@@ -21,6 +21,10 @@ const hotelSchema = new mongoose.Schema({
     type: [String],
     required: true
   },
+  estrellas: {
+    type: Number,
+    required: true
+  },
   tieneSello: {
     type: Boolean,
     default: false,
