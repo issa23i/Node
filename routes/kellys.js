@@ -1,7 +1,7 @@
 const express = require('express');
 const { getItems, getItem, createItem, updateItem, deleteItem } = require('../controllers/kelly');
 const router = express.Router();
-const { validationCreateItem, validationGetItem } = require('../validators/kelly');
+const { validationCreateItem, validationGetItem, validationUpdateItem } = require('../validators/kelly');
 const customHeader = require('../middleware/customHeader');
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
@@ -26,7 +26,7 @@ router.post('/', validationCreateItem, authMiddleware, checkRol(['admin']),/**cu
 /**
  * Actualizar un registro (item)
  */
-router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin']), updateItem);
+router.put('/:id', validationGetItem, validationUpdateItem, authMiddleware, checkRol(['admin', 'kelly']), updateItem);
 
 /**
  * Borrar un registro

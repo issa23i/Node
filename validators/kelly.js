@@ -13,4 +13,10 @@ const validationGetItem = [
     (req,res,next) => validateResuls(req,res,next)
 ]
 
-module.exports = { validationCreateItem, validationGetItem }
+const validationUpdateItem = [
+    check("hotel").exists().notEmpty().isMongoId(),
+    check("puntuacion").optional().isInt({ min: 1, max: 10 }),
+    (req, res, next) => validateResults(req, res, next)
+  ];
+
+module.exports = { validationCreateItem, validationGetItem, validationUpdateItem }
