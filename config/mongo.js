@@ -1,5 +1,18 @@
 const mongoose = require("mongoose");
 
+/**
+ * Conexión a la base de datos de MongoDB
+ * 
+ * @function
+ * 
+ * @async
+ * 
+ * @param {string} DB_URI - URI de la base de datos
+ * 
+ * @throws {error} Si ocurre un error al acceder a MongoDB
+ * 
+ * @returns {Promise<void>}
+ */
 const dbConnect = async () => {
   const DB_URI = process.env.DB_URI;
   try {
