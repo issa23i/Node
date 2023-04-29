@@ -1,6 +1,6 @@
 const customHeader = (req, res, next) => {
     try {
-        // TODO: si hay que hacer api keys
+        // TODO: descomentar para solicitar una api key pública en la API
         /** 
         const apiKey = req.headers.api_key
         if(apiKey === 'api-publica-123'){
