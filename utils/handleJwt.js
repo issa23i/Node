@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken')
 const JWT_SECRET = process.env.JWT_SECRET
 
 /**
- * Pasar el objeto usuario
- * @param {*} user 
+ * Genera un token JWT firmado para un usuario dado.
+ * @param {Object} user - Objeto que representa al usuario.
+ * @returns {string} - Token JWT firmado.
  */
 const tokenSign = async (user) => {
     // Firmar, generar el token
@@ -19,12 +20,11 @@ const tokenSign = async (user) => {
 }
 
 /**
- * Pasar el token de session
- * @param {*} tokenJWT 
- * @returns 
+ * Verifica un token JWT dado y devuelve la carga útil decodificada si es válido.
+ * @param {string} tokenJWT - Token JWT a verificar.
+ * @returns {Object|null} - Objeto que representa la carga útil decodificada o null si el token es inválido.
  */
 const verifyToken = async (tokenJWT) => {
-    // Verificar token
     try {
         return jwt.verify(tokenJWT, JWT_SECRET)
     } catch (e) {

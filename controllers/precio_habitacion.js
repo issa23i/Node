@@ -3,9 +3,9 @@ const { precioHabitacionModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
 
 /**
- * Obtener una lista
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de todos los registros en la base de datos de precios de habitaciones.
+ * @param {*} req - La solicitud HTTP.
+ * @param {*} res - La respuesta HTTP.
  */
 const getItems = async (req, res) => {
   try {
@@ -17,9 +17,9 @@ const getItems = async (req, res) => {
 };
 
 /**
- * Obtener un detalle
- * @param {*} req 
- * @param {*} res 
+ * Obtener el detalle de un registro en la base de datos de precios de habitaciones.
+ * @param {*} req - La solicitud HTTP.
+ * @param {*} res - La respuesta HTTP.
  */
 const getItem = async (req, res) => {
   try{
@@ -33,9 +33,9 @@ const getItem = async (req, res) => {
 };
 
 /**
- * Insertar un registro
- * @param {*} req 
- * @param {*} res 
+ * Insertar un nuevo registro en la base de datos de precios de habitaciones.
+ * @param {*} req - La solicitud HTTP.
+ * @param {*} res - La respuesta HTTP.
  */
 const createItem = async (req, res) => {
   try {
@@ -48,9 +48,9 @@ const createItem = async (req, res) => {
 };
 
 /**
- * Actualizar un registro
- * @param {*} req 
- * @param {*} res 
+ * Actualizar un registro en la base de datos de precios de habitaciones.
+ * @param {*} req - La solicitud HTTP.
+ * @param {*} res - La respuesta HTTP.
  */
 const updateItem = async (req, res) => {
   try{

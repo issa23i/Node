@@ -1,6 +1,14 @@
 const { verifyToken } = require('../utils/handleJwt')
 const { personaModel } = require('../models')
 
+
+/**
+ * Middleware para autenticar y autorizar peticiones HTTP. Verifica la existencia y validez del token de autorización
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
+ * @param {*} next - Función que llama al siguiente middleware en la cadena
+ * @throws {Error} - Si el token de autorización no es válido o no existe en la petición, se devuelve un error 401
+*/
 const authMiddleware = async ( req, res, next ) => {
     const { handleHttpError } = require('../utils/handleError')
     

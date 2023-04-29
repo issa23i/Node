@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: validators/buscar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: validators/buscar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { check } = require('express-validator');
+const validateResults = require('../utils/handleValidator');
+
+/**
+ * Validación de parámetros de búsqueda de habitaciones.
+ * @param {*} req - Petición HTTP con los siguientes parámetros:
+ * - ciudad: la ciudad donde se busca la habitación
+ * - checkIn: la fecha de entrada a la habitación (mayor que la fecha actual)
+ * - checkOut: la fecha de salida de la habitación (posterior a la fecha de entrada)
+ * - viajeros: la cantidad de personas que se hospedarán en la habitación (entre 1 y 10)
+ * @param {*} res - Respuesta HTTP
+ * @param {*} next - Función middleware
+*/
+const validationSearchParams = [
+  check('ciudad').exists().notEmpty(),
+  check('checkIn').exists().notEmpty().isDate().isAfter(), // mayor que fecha actual
+  check('checkOut').exists().notEmpty().isDate().custom((value, {req}) => {
+    if (value &lt;= req.body.checkIn) {
+      throw new Error('La fecha de salida debe ser posterior a la fecha de entrada');
+    }
+    return true;
+  }),
+  check('viajeros').exists().isInt({ min: 1, max: 10 }),
+  (req, res, next) => validateResults(req, res, next)
+];
+
+/**
+ * Validación de parámetros de búsqueda de hoteles.
+ * @param {*} req - Petición HTTP con los siguientes parámetros:
+ * - checkIn: la fecha de entrada al hotel (mayor que la fecha actual)
+ * - checkOut: la fecha de salida del hotel (posterior a la fecha de entrada)
+ * - viajeros: la cantidad de personas que se hospedarán en el hotel (entre 1 y 10)
+ * @param {*} res - Respuesta HTTP
+ * @param {*} next - Función middleware
+*/
+const validationSearchParamsHotel = [
+  check('checkIn').exists().notEmpty().isDate().isAfter(), // mayor que fecha actual
+  check('checkOut').exists().notEmpty().isDate().custom((value, {req}) => {
+    if (value &lt;= req.body.checkIn) {
+      throw new Error('La fecha de salida debe ser posterior a la fecha de entrada');
+    }
+    return true;
+  }),
+  check('viajeros').exists().isInt({ min: 1, max: 10 }),
+  (req, res, next) => validateResults(req, res, next)
+];
+
+module.exports = { validationSearchParams, validationSearchParamsHotel };
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#buscar">buscar</a></li><li><a href="global.html#buscarEnHotel">buscarEnHotel</a></li><li><a href="global.html#checkRol">checkRol</a></li><li><a href="global.html#compare">compare</a></li><li><a href="global.html#createItem">createItem</a></li><li><a href="global.html#createPrecioHabitacionValidation">createPrecioHabitacionValidation</a></li><li><a href="global.html#customHeader">customHeader</a></li><li><a href="global.html#deleteItem">deleteItem</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getItems">getItems</a></li><li><a href="global.html#getPrecioHabitacionValidation">getPrecioHabitacionValidation</a></li><li><a href="global.html#habitacionSchema">habitacionSchema</a></li><li><a href="global.html#handleHttpError">handleHttpError</a></li><li><a href="global.html#hotelSchema">hotelSchema</a></li><li><a href="global.html#imagenSchema">imagenSchema</a></li><li><a href="global.html#kellySchema">kellySchema</a></li><li><a href="global.html#loginController">loginController</a></li><li><a href="global.html#models">models</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#personaSchema">personaSchema</a></li><li><a href="global.html#precioHabitacionSchema">precioHabitacionSchema</a></li><li><a href="global.html#registerController">registerController</a></li><li><a href="global.html#resenaSchema">resenaSchema</a></li><li><a href="global.html#reservaSchema">reservaSchema</a></li><li><a href="global.html#setPuntuacionHotel">setPuntuacionHotel</a></li><li><a href="global.html#setSello">setSello</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#tokenSign">tokenSign</a></li><li><a href="global.html#updateItem">updateItem</a></li><li><a href="global.html#validateResuls">validateResuls</a></li><li><a href="global.html#validationCreateItem">validationCreateItem</a></li><li><a href="global.html#validationCreateResena">validationCreateResena</a></li><li><a href="global.html#validationGetItem">validationGetItem</a></li><li><a href="global.html#validationGetResena">validationGetResena</a></li><li><a href="global.html#validationLogin">validationLogin</a></li><li><a href="global.html#validationRegister">validationRegister</a></li><li><a href="global.html#validationSearchParams">validationSearchParams</a></li><li><a href="global.html#validationSearchParamsHotel">validationSearchParamsHotel</a></li><li><a href="global.html#validationUpdateItem">validationUpdateItem</a></li><li><a href="global.html#verifyToken">verifyToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Apr 29 2023 23:34:11 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

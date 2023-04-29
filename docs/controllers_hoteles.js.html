@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/hoteles.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/hoteles.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { matchedData } = require('express-validator')
+const { hotelModel } = require('../models')
+const {handleHttpError} = require('../utils/handleError')
+
+
+/**
+ * Obtener una lista de hoteles que tienen sello
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
+ */
+const getItems = async (req, res) => {
+    try {
+        // TODO: si queremos quitar user, podemos sólo con comentar const user y la variable user en el send
+        // TODO: si borramos lo anterior, borrar también en el middleware session el const user y req.user
+        // TODO: comprobar si hay más sitios donde nos interesa usar el user en la request (tres siguientes líneas)
+        // const user = req.user // saber quién está realizando la petición gracias a authMiddleware
+        
+        // Sólo se muestran los hoteles que tienen sello
+        const data = await hotelModel.find({ tieneSello: true })
+        res.send({ data/**, user */}) // muestra los hoteles y la persona que los pidió
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_GET_ITEMS')
+    }
+}
+
+/**
+ * Obtener los detalles de un hotel por su ID
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
+ */
+const getItem = async (req, res) => {
+    try{
+        req = matchedData(req)
+        const {id} = req
+        const data = await hotelModel.findById(id) 
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_GET_ITEM')
+    }
+}
+
+/**
+ * Insertar un nuevo hotel en la base de datos
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
+ */
+const createItem = async (req, res) => {
+    try {
+        const body = matchedData(req) // recoge sólo los datos validados (carpeta validators)
+        const data = await hotelModel.create(body)
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_CREATE_ITEM')
+    }
+}
+
+/**
+ * Actualiza los detalles de un hotel existente
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
+ */
+const updateItem = async (req, res) => {
+    try{
+        const {id, ...body} = matchedData(req) // recoge id y lo que sobra en body {id} {body}
+        console.log(id)
+        console.log(body)
+        const data = await hotelModel.findOneAndUpdate(
+            {_id: id}, // busca por id,
+            body, // devuelve el cuerpo (body)
+            {new: true}) // que devuelva actualizado, no el antiguo
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_UPDATE_ITEM')
+    }
+}
+
+/**
+ * Eliminar un hotel existente de la base de datos
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
+ */
+const deleteItem = async (req, res) => {
+    try{
+        req = matchedData(req)
+        const {id} = req
+        const data = await hotelModel.deleteOne({_id:id}) // borra el registro que coincida con el id
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_DELETE_ITEM')
+    }
+}
+
+module.exports = { getItems, getItem, createItem, updateItem, deleteItem }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#buscar">buscar</a></li><li><a href="global.html#buscarEnHotel">buscarEnHotel</a></li><li><a href="global.html#checkRol">checkRol</a></li><li><a href="global.html#compare">compare</a></li><li><a href="global.html#createItem">createItem</a></li><li><a href="global.html#createPrecioHabitacionValidation">createPrecioHabitacionValidation</a></li><li><a href="global.html#customHeader">customHeader</a></li><li><a href="global.html#deleteItem">deleteItem</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getItems">getItems</a></li><li><a href="global.html#getPrecioHabitacionValidation">getPrecioHabitacionValidation</a></li><li><a href="global.html#habitacionSchema">habitacionSchema</a></li><li><a href="global.html#handleHttpError">handleHttpError</a></li><li><a href="global.html#hotelSchema">hotelSchema</a></li><li><a href="global.html#imagenSchema">imagenSchema</a></li><li><a href="global.html#kellySchema">kellySchema</a></li><li><a href="global.html#loginController">loginController</a></li><li><a href="global.html#models">models</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#personaSchema">personaSchema</a></li><li><a href="global.html#precioHabitacionSchema">precioHabitacionSchema</a></li><li><a href="global.html#registerController">registerController</a></li><li><a href="global.html#resenaSchema">resenaSchema</a></li><li><a href="global.html#reservaSchema">reservaSchema</a></li><li><a href="global.html#setPuntuacionHotel">setPuntuacionHotel</a></li><li><a href="global.html#setSello">setSello</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#tokenSign">tokenSign</a></li><li><a href="global.html#updateItem">updateItem</a></li><li><a href="global.html#validateResuls">validateResuls</a></li><li><a href="global.html#validationCreateItem">validationCreateItem</a></li><li><a href="global.html#validationCreateResena">validationCreateResena</a></li><li><a href="global.html#validationGetItem">validationGetItem</a></li><li><a href="global.html#validationGetResena">validationGetResena</a></li><li><a href="global.html#validationLogin">validationLogin</a></li><li><a href="global.html#validationRegister">validationRegister</a></li><li><a href="global.html#validationSearchParams">validationSearchParams</a></li><li><a href="global.html#validationSearchParamsHotel">validationSearchParamsHotel</a></li><li><a href="global.html#validationUpdateItem">validationUpdateItem</a></li><li><a href="global.html#verifyToken">verifyToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Apr 29 2023 23:34:11 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

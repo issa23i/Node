@@ -4,9 +4,9 @@ const {handleHttpError} = require('../utils/handleError')
 
 
 /**
- * Obtener una lista
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de hoteles que tienen sello
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
  */
 const getItems = async (req, res) => {
     try {
@@ -24,9 +24,9 @@ const getItems = async (req, res) => {
 }
 
 /**
- * Obtener un detalle
- * @param {*} req 
- * @param {*} res 
+ * Obtener los detalles de un hotel por su ID
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
  */
 const getItem = async (req, res) => {
     try{
@@ -40,9 +40,9 @@ const getItem = async (req, res) => {
 }
 
 /**
- * Insertar un registro
- * @param {*} req 
- * @param {*} res 
+ * Insertar un nuevo hotel en la base de datos
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
  */
 const createItem = async (req, res) => {
     try {
@@ -55,9 +55,9 @@ const createItem = async (req, res) => {
 }
 
 /**
- * Actualizar un registro
- * @param {*} req 
- * @param {*} res 
+ * Actualiza los detalles de un hotel existente
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
  */
 const updateItem = async (req, res) => {
     try{
@@ -75,9 +75,9 @@ const updateItem = async (req, res) => {
 }
 
 /**
- * Eliminar un registro
- * @param {*} req 
- * @param {*} res 
+ * Eliminar un hotel existente de la base de datos
+ * @param {*} req - Petición HTTP recibida
+ * @param {*} res - Respuesta HTTP a enviar
  */
 const deleteItem = async (req, res) => {
     try{

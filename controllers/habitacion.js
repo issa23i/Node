@@ -3,9 +3,9 @@ const { habitacionModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
 
 /**
- * Obtener una lista
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de habitaciones
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const getItems = async (req, res) => {
   try {
@@ -17,9 +17,9 @@ const getItems = async (req, res) => {
 };
 
 /**
- * Obtener un detalle
- * @param {*} req 
- * @param {*} res 
+ * Obtener el detalle de una habitación
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const getItem = async (req, res) => {
   try {
@@ -33,9 +33,9 @@ const getItem = async (req, res) => {
 };
 
 /**
- * Insertar un registro
- * @param {*} req 
- * @param {*} res 
+ * Insertar una nueva habitación
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const createItem = async (req, res) => {
   try {
@@ -47,10 +47,11 @@ const createItem = async (req, res) => {
   }
 };
 
+
 /**
- * Actualizar un registro
- * @param {*} req 
- * @param {*} res 
+ * Actualizar una habitación existente
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const updateItem = async (req, res) => {
   try {
@@ -67,9 +68,9 @@ const updateItem = async (req, res) => {
 };
 
 /**
- * Eliminar un registro
- * @param {*} req 
- * @param {*} res 
+ * Eliminar una habitación existente
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const deleteItem = async (req, res) => {
   try {

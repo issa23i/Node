@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/auth.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/auth.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { matchedData } = require('express-validator')
+const { encrypt, compare} = require('../utils/handlePassword')
+const {tokenSign} = require('../utils/handleJwt')
+const { personaModel } = require('../models')
+const { handleHttpError } =require('../utils/handleError')
+
+/**
+ * Controlador que registra un usuario
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
+ */
+const registerController = async (req, res) => {
+    try {
+        req = matchedData(req)
+        const password = await encrypt(req.password) // coge el password del request y lo hashea
+        const body = {...req, password} // recoge el req y sobreescribe el password ya hasheado
+        const dataUser = await personaModel.create(body) // crea un nueva persona en la base de datos
+        dataUser.set("password", undefined, {strict: false}) // hacer que la data no contenga el password
+
+        const data = {
+            token:await tokenSign(dataUser), // Devuelve la firma
+            user:dataUser // Objeto usuario
+        }
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'HUBO_UN_ERROR_EN_EL_REGISTRO')
+    }
+}
+
+/**
+ * Controlador que loguea a una persona
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
+ */
+const loginController = async (req, res) => {
+    try {
+        req = matchedData(req) // curar la request
+        const user = await personaModel
+            .findOne({email:req.email}) // encontrar al usuario con ese email
+            .select('nombre email password rol') // selecciona los campos que necesitamos 
+
+        if (! user ) {
+            handleHttpError(res, 'ERROR_DE_AUTENTICACION', 401) // Código no autorización
+            return
+        }
+
+        // el usuario existe, comprobar contraseña
+        const hashPassword = user.get('password')
+        const check = await compare(req.password, hashPassword)
+
+        if (!check){
+            handleHttpError(res, 'ERROR_DE_AUTENTICACION', 401) // Código no autorización
+            return
+        }
+
+        user.set('password', undefined, {strict:false}) // no queremos que muestre la contraseña, una vez validada
+
+        // usuario y contraseña coinciden, verificar firma
+        const data = {
+            token:await tokenSign(user), // Devuelve la firma
+            user // user:user Objeto usuario
+        }
+
+        res.send({data})
+
+    } catch (e) {
+        handleHttpError(res, 'ERROR_DE_AUTENTICACION')
+    }
+}
+/**
+ * 
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @returns {Promise&lt;void>} - Promesa que resuelve con los datos actualizados del elemento.
+ * @throws {Error} - Si ocurre algún error durante el proceso de actualización.
+ */
+const updateItem = async (req, res) => {
+    try{
+        const { ...body} = matchedData(req) // recoge  body  {body}
+        const id = req.params.id;
+
+        const password = await encrypt(body.password)
+        body.password = password
+        // con el middleware session hemos recogido al usuario que está realizando la petición
+        const user = req.user;
+
+        const email = body.email
+        const persona = await personaModel
+            .findOne({email}) // encontrar al usuario con ese email
+            .select('_id nombre email password rol') // selecciona los campos que necesitamos 
+
+            
+        console.log(persona.email)
+        if (! persona ) {
+            handleHttpError(res, 'ERROR_DE_AUTENTICACION', 401) // Código no autorización
+            return
+        }
+
+        // Sólo la persona logueada puede modificar sus datos
+        if(user._id.toString() !== persona._id.toString()){
+            handleHttpError(res, 'FORBIDDEN', 403) // Código no autorización
+            return
+        }
+
+        const data = await personaModel.findOneAndUpdate(
+            {_id: id}, // busca por id,
+            body, // devuelve el cuerpo (body)
+            {new: true} // que devuelva actualizado, no el antiguo
+        ) 
+        data.set("password", undefined, {strict: false}) // hacer que la data no contenga el password
+        
+        res.send({data})
+    } catch (e) {
+        console.log(e)
+        handleHttpError(res, 'ERROR_EN_UPDATE_ITEM')
+    }
+}
+
+module.exports = {registerController, loginController, updateItem}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#buscar">buscar</a></li><li><a href="global.html#buscarEnHotel">buscarEnHotel</a></li><li><a href="global.html#checkRol">checkRol</a></li><li><a href="global.html#compare">compare</a></li><li><a href="global.html#createItem">createItem</a></li><li><a href="global.html#createPrecioHabitacionValidation">createPrecioHabitacionValidation</a></li><li><a href="global.html#customHeader">customHeader</a></li><li><a href="global.html#deleteItem">deleteItem</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getItems">getItems</a></li><li><a href="global.html#getPrecioHabitacionValidation">getPrecioHabitacionValidation</a></li><li><a href="global.html#habitacionSchema">habitacionSchema</a></li><li><a href="global.html#handleHttpError">handleHttpError</a></li><li><a href="global.html#hotelSchema">hotelSchema</a></li><li><a href="global.html#imagenSchema">imagenSchema</a></li><li><a href="global.html#kellySchema">kellySchema</a></li><li><a href="global.html#loginController">loginController</a></li><li><a href="global.html#models">models</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#personaSchema">personaSchema</a></li><li><a href="global.html#precioHabitacionSchema">precioHabitacionSchema</a></li><li><a href="global.html#registerController">registerController</a></li><li><a href="global.html#resenaSchema">resenaSchema</a></li><li><a href="global.html#reservaSchema">reservaSchema</a></li><li><a href="global.html#setPuntuacionHotel">setPuntuacionHotel</a></li><li><a href="global.html#setSello">setSello</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#tokenSign">tokenSign</a></li><li><a href="global.html#updateItem">updateItem</a></li><li><a href="global.html#validateResuls">validateResuls</a></li><li><a href="global.html#validationCreateItem">validationCreateItem</a></li><li><a href="global.html#validationCreateResena">validationCreateResena</a></li><li><a href="global.html#validationGetItem">validationGetItem</a></li><li><a href="global.html#validationGetResena">validationGetResena</a></li><li><a href="global.html#validationLogin">validationLogin</a></li><li><a href="global.html#validationRegister">validationRegister</a></li><li><a href="global.html#validationSearchParams">validationSearchParams</a></li><li><a href="global.html#validationSearchParamsHotel">validationSearchParamsHotel</a></li><li><a href="global.html#validationUpdateItem">validationUpdateItem</a></li><li><a href="global.html#verifyToken">verifyToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Apr 29 2023 23:34:11 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

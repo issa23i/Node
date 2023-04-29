@@ -7,8 +7,14 @@ const checkRol = require('../middleware/rol')
 
 // http://localhost:3001/api/buscar
 
+/**
+ * Listar items
+ */
 router.get('/', validationSearchParams, authMiddleware, checkRol(['admin', 'user']), buscar);
 
+/**
+ * Obtener un detalle (item)
+ */
 router.get('/:id', validationSearchParamsHotel, authMiddleware, checkRol(['admin', 'user']), buscarEnHotel)
 
 module.exports = router

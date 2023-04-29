@@ -1,7 +1,13 @@
 const { check } = require("express-validator");
 const validateResuls = require("../utils/handleValidator");
 
-// nif, nombre, apellido1, apellido2
+/**
+ * Validación de registro de usuario
+ * @param {Object} req - Objeto de petición HTTP
+ * @param {Object} res - Objeto de respuesta HTTP
+ * @param {function} next - Función que llama al siguiente middleware
+ * @returns {void}
+ */
 const validationRegister = [
   check("nif")
     .exists()
@@ -25,6 +31,13 @@ const validationRegister = [
   (req, res, next) => validateResuls(req, res, next),
 ];
 
+/**
+ * Validación de inicio de sesión
+ * @param {Object} req - Objeto de petición HTTP
+ * @param {Object} res - Objeto de respuesta HTTP
+ * @param {function} next - Función que llama al siguiente middleware
+ * @returns {void}
+ */
 const validationLogin = [
   check("email").exists().notEmpty().isEmail(),
 
@@ -37,6 +50,13 @@ const validationLogin = [
   (req, res, next) => validateResuls(req, res, next),
 ];
 
+/**
+ * Validación de actualización de elemento
+ * @param {Object} req - Objeto de petición HTTP
+ * @param {Object} res - Objeto de respuesta HTTP
+ * @param {function} next - Función que llama al siguiente middleware
+ * @returns {void}
+ */
 const validationUpdateItem = [
     check("email").exists().notEmpty().isEmail(),
 

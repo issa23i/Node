@@ -3,9 +3,9 @@ const { reservaModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
 
 /**
- * Obtener una lista de reservas
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de todas las reservas.
+ * @param {*} req - La petición HTTP.
+ * @param {*} res - La respuesta HTTP.
  */
 const getItems = async (req, res) => {
   try {
@@ -17,9 +17,9 @@ const getItems = async (req, res) => {
 };
 
 /**
- * Obtener una reserva
- * @param {*} req 
- * @param {*} res 
+ * Obtener una reserva específica por su ID.
+ * @param {*} req - La petición HTTP que contiene el ID de la reserva.
+ * @param {*} res - La respuesta HTTP.
  */
 const getItem = async (req, res) => {
   try {
@@ -46,9 +46,9 @@ const getItem = async (req, res) => {
 };
 
 /**
- * Crear una reserva
- * @param {*} req 
- * @param {*} res 
+ * Crea una nueva reserva en la base de datos.
+ * @param {*} req - La petición HTTP que contiene los datos de la nueva reserva.
+ * @param {*} res - La respuesta HTTP.
  */
 const createItem = async (req, res) => {
   try {
@@ -61,9 +61,9 @@ const createItem = async (req, res) => {
 };
 
 /**
- * Actualizar una reserva
- * @param {*} req 
- * @param {*} res 
+ * Actualiza una reserva existente en la base de datos.
+ * @param {*} req - La petición HTTP que contiene el ID de la reserva y los datos actualizados.
+ * @param {*} res - La respuesta HTTP.
  */
 const updateItem = async (req, res) => {
   try {
@@ -80,9 +80,9 @@ const updateItem = async (req, res) => {
 };
 
 /**
- * Eliminar una reserva
- * @param {*} req 
- * @param {*} res 
+ * Elimina una reserva existente en la base de datos.
+ * @param {*} req - La petición HTTP que contiene el ID de la reserva que se eliminará.
+ * @param {*} res - La respuesta HTTP.
  */
 const deleteItem = async (req, res) => {
   try {

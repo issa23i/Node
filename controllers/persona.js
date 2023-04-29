@@ -2,12 +2,13 @@ const { matchedData } = require('express-validator')
 const { personaModel } = require('../models')
 const {handleHttpError} = require('../utils/handleError')
 
-// TODO: Hacer algo más visual con los errores
+
 
 /**
- * Obtener una lista
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de registros de personas.
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al obtener los registros.
  */
 const getItems = async (req, res) => {
     try {
@@ -19,9 +20,10 @@ const getItems = async (req, res) => {
 }
 
 /**
- * Obtener un detalle
- * @param {*} req 
- * @param {*} res 
+ * Obtener el detalle de un registro de persona.
+ * @param {*} req - Objeto de solicitud HTTP con el id del registro.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al obtener el registro o si el usuario no tiene permisos para ver el contenido.
  */
 const getItem = async (req, res) => {
     try{
@@ -47,9 +49,10 @@ const getItem = async (req, res) => {
 }
 
 /**
- * Insertar un registro
- * @param {*} req 
- * @param {*} res 
+ * Insertar un nuevo registro de persona en la base de datos.
+ * @param {*} req - Objeto de solicitud HTTP con los datos del registro a insertar.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al insertar el registro.
  */
 const createItem = async (req, res) => {
     try {
@@ -62,9 +65,10 @@ const createItem = async (req, res) => {
 }
 
 /**
- * Actualizar un registro
- * @param {*} req 
- * @param {*} res 
+ * Actualizar un registro de persona existente en la base de datos.
+ * @param {*} req - Objeto de solicitud HTTP con el id del registro a actualizar y los nuevos datos.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al actualizar el registro.
  */
 const updateItem = async (req, res) => {
     try{
@@ -84,9 +88,10 @@ const updateItem = async (req, res) => {
 }
 
 /**
- * Eliminar un registro
- * @param {*} req 
- * @param {*} res 
+ * Eliminar un registro de persona existente en la base de datos.
+ * @param {*} req - Objeto de solicitud HTTP con el id del registro a eliminar.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al eliminar el registro.
  */
 const deleteItem = async (req, res) => {
     try{

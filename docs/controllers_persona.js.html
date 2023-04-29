@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/persona.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/persona.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { matchedData } = require('express-validator')
+const { personaModel } = require('../models')
+const {handleHttpError} = require('../utils/handleError')
+
+
+
+/**
+ * Obtener una lista de registros de personas.
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al obtener los registros.
+ */
+const getItems = async (req, res) => {
+    try {
+        const data = await personaModel.find({})
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_GET_ITEMS')
+    }
+}
+
+/**
+ * Obtener el detalle de un registro de persona.
+ * @param {*} req - Objeto de solicitud HTTP con el id del registro.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al obtener el registro o si el usuario no tiene permisos para ver el contenido.
+ */
+const getItem = async (req, res) => {
+    try{
+        
+    const { id } = matchedData(req);
+        // con el middleware session hemos recogido al usuario que está realizando la petición
+        const user = req.user;
+        const persona = await personaModel.findById(id) 
+
+        if (persona) {
+            const esMismaPersona = persona._id.toString() === user._id.toString() 
+            
+            if (!esMismaPersona){
+              res.status(403).send({ message: 'No tiene permisos para visualizar el contenido' });
+            } else {
+              res.send({ persona });
+            }
+          }
+        
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_GET_ITEM')
+    }
+}
+
+/**
+ * Insertar un nuevo registro de persona en la base de datos.
+ * @param {*} req - Objeto de solicitud HTTP con los datos del registro a insertar.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al insertar el registro.
+ */
+const createItem = async (req, res) => {
+    try {
+        const body = matchedData(req) // recoge sólo los datos validados (carpeta validators)
+        const data = await personaModel.create(body)
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_CREATE_ITEM')
+    }
+}
+
+/**
+ * Actualizar un registro de persona existente en la base de datos.
+ * @param {*} req - Objeto de solicitud HTTP con el id del registro a actualizar y los nuevos datos.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al actualizar el registro.
+ */
+const updateItem = async (req, res) => {
+    try{
+        const {id, ...body} = matchedData(req) // recoge id y lo que sobra en body {id} {body}
+        // con el middleware session hemos recogido al usuario que está realizando la petición
+        const user = req.user;
+        console.log(user._id)
+        const data = await personaModel.findOneAndUpdate(
+            {_id: id}, // busca por id,
+            body, // devuelve el cuerpo (body)
+            {new: true}) // que devuelva actualizado, no el antiguo
+        data.set('password', undefined, {strict: false});
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_UPDATE_ITEM')
+    }
+}
+
+/**
+ * Eliminar un registro de persona existente en la base de datos.
+ * @param {*} req - Objeto de solicitud HTTP con el id del registro a eliminar.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @throws {Error} Si hay un error al eliminar el registro.
+ */
+const deleteItem = async (req, res) => {
+    try{
+        req = matchedData(req)
+        const {id} = req
+        const data = await personaModel.deleteOne({_id:id}) // borra el registro que coincida con el id
+        const count = data.deletedCount // cuenta el número de registros borrados
+
+        if (count === 1) {
+            res.send({message: 'Registro eliminado exitosamente', count})
+        } else {
+            res.send({message: 'No se encontró ningún registro para eliminar', count})
+        }
+    } catch (e) {
+        handleHttpError(res, 'ERROR_EN_DELETE_ITEM')
+    }
+}
+
+module.exports = { getItems, getItem, createItem, updateItem, deleteItem }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#buscar">buscar</a></li><li><a href="global.html#buscarEnHotel">buscarEnHotel</a></li><li><a href="global.html#checkRol">checkRol</a></li><li><a href="global.html#compare">compare</a></li><li><a href="global.html#createItem">createItem</a></li><li><a href="global.html#createPrecioHabitacionValidation">createPrecioHabitacionValidation</a></li><li><a href="global.html#customHeader">customHeader</a></li><li><a href="global.html#deleteItem">deleteItem</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getItems">getItems</a></li><li><a href="global.html#getPrecioHabitacionValidation">getPrecioHabitacionValidation</a></li><li><a href="global.html#habitacionSchema">habitacionSchema</a></li><li><a href="global.html#handleHttpError">handleHttpError</a></li><li><a href="global.html#hotelSchema">hotelSchema</a></li><li><a href="global.html#imagenSchema">imagenSchema</a></li><li><a href="global.html#kellySchema">kellySchema</a></li><li><a href="global.html#loginController">loginController</a></li><li><a href="global.html#models">models</a></li><li><a href="global.html#mongoose">mongoose</a></li><li><a href="global.html#personaSchema">personaSchema</a></li><li><a href="global.html#precioHabitacionSchema">precioHabitacionSchema</a></li><li><a href="global.html#registerController">registerController</a></li><li><a href="global.html#resenaSchema">resenaSchema</a></li><li><a href="global.html#reservaSchema">reservaSchema</a></li><li><a href="global.html#setPuntuacionHotel">setPuntuacionHotel</a></li><li><a href="global.html#setSello">setSello</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#tokenSign">tokenSign</a></li><li><a href="global.html#updateItem">updateItem</a></li><li><a href="global.html#validateResuls">validateResuls</a></li><li><a href="global.html#validationCreateItem">validationCreateItem</a></li><li><a href="global.html#validationCreateResena">validationCreateResena</a></li><li><a href="global.html#validationGetItem">validationGetItem</a></li><li><a href="global.html#validationGetResena">validationGetResena</a></li><li><a href="global.html#validationLogin">validationLogin</a></li><li><a href="global.html#validationRegister">validationRegister</a></li><li><a href="global.html#validationSearchParams">validationSearchParams</a></li><li><a href="global.html#validationSearchParamsHotel">validationSearchParamsHotel</a></li><li><a href="global.html#validationUpdateItem">validationUpdateItem</a></li><li><a href="global.html#verifyToken">verifyToken</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Apr 29 2023 23:34:11 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

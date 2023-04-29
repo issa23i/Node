@@ -4,10 +4,11 @@ const { handleHttpError } = require('../utils/handleError');
 const tieneSello = require('../utils/handleSelloHotel')
 
 /**
- * Obtener una lista
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de registros de kellys
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
+
 const getItems = async (req, res) => {
   try {
     const data = await kellyModel.find({});
@@ -18,9 +19,9 @@ const getItems = async (req, res) => {
 };
 
 /**
- * Obtener un detalle
- * @param {*} req 
- * @param {*} res 
+ * Obtener un registro de una kelly por su id
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
 const getItem = async (req, res) => {
   try {
@@ -38,9 +39,9 @@ const getItem = async (req, res) => {
 };
 
 /**
- * Insertar un registro
- * @param {*} req 
- * @param {*} res 
+ * Insertar un registro en la base de datos de una kelly
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
 const createItem = async (req, res) => {
   try {
@@ -58,10 +59,11 @@ const createItem = async (req, res) => {
 };
 
 /**
- * Actualizar un registro
- * @param {*} req 
- * @param {*} res 
+ * Actualizar un registro existente en la base de datos de una kelly
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
+
 const updateItem = async (req, res) => {
       try { 
         const user = req.user
@@ -89,10 +91,11 @@ const updateItem = async (req, res) => {
 };
 
 /**
- * Eliminar un registro
- * @param {*} req 
- * @param {*} res 
+ * Eliminar un registro existente de la base de datos de una kelly
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
+
 const deleteItem = async (req, res) => {
   try {
     const { id } = matchedData(req);

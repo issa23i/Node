@@ -5,9 +5,9 @@ const setPuntuacionHotel = require('../utils/handlePuntuacionHotel')
 
 
 /**
- * Obtener una lista de reseñas
- * @param {*} req 
- * @param {*} res 
+ * Obtiene una lista de reseñas.
+ * @param {*} req - Petición HTTP.
+ * @param {*} res - Respuesta HTTP.
  */
 const getItems = async (req, res) => {
   try {
@@ -19,9 +19,9 @@ const getItems = async (req, res) => {
 };
 
 /**
- * Obtener una reseña por id
- * @param {*} req 
- * @param {*} res 
+ * Obtiene una reseña por ID.
+ * @param {*} req - Petición HTTP que contiene el ID de la reseña.
+ * @param {*} res - Respuesta HTTP.
  */
 const getItem = async (req, res) => {
   try {
@@ -43,9 +43,9 @@ const getItem = async (req, res) => {
 };
 
 /**
- * Crear una nueva reseña
- * @param {*} req 
- * @param {*} res 
+ * Crea una nueva reseña.
+ * @param {*} req - Petición HTTP que contiene los datos de la nueva reseña.
+ * @param {*} res - Respuesta HTTP.
  */
 const createItem = async (req, res) => {
   try {
@@ -94,9 +94,9 @@ const createItem = async (req, res) => {
 };
 
 /**
- * Actualizar una reseña existente
- * @param {*} req 
- * @param {*} res 
+ * Actualiza una reseña existente.
+ * @param {*} req - Petición HTTP que contiene el ID de la reseña y los nuevos datos.
+ * @param {*} res - Respuesta HTTP.
  */
 const updateItem = async (req, res) => {
   try {
@@ -137,9 +137,9 @@ const updateItem = async (req, res) => {
 };
 
 /**
- * Eliminar una reseña por id
- * @param {*} req 
- * @param {*} res 
+ * Eliminar una reseña existente en la base de datos por id
+ * @param {*} req - Petición HTTP que contiene los datos de la nueva reseña.
+ * @param {*} res - Respuesta HTTP.
  */
 const deleteItem = async (req, res) => {
   try {

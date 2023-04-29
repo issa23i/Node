@@ -7,9 +7,9 @@ const MEDIA_PATH = `${__dirname}/../storage`
 
 
 /**
- * Obtener una lista
- * @param {*} req 
- * @param {*} res 
+ * Obtener una lista de registros de imagen.
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
 const getItems = async (req, res) => {
     try {
@@ -21,9 +21,9 @@ const getItems = async (req, res) => {
 }
 
 /**
- * Obtener un detalle
- * @param {*} req 
- * @param {*} res 
+ * Obtener los detalles de un registro de imagen.
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
 const getItem = async (req, res) => {
     try {
@@ -36,11 +36,11 @@ const getItem = async (req, res) => {
 }
 
 /**
- * Insertar un registro
- * @param {*} req 
- * @param {*} res 
+ * Insertar un registro de imagen.
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
-const createItem = async (req, res) => { // TODO: subida de archivos, mejorar
+const createItem = async (req, res) => { 
     try {
         const { body, file } = req // deconstruido const body = req.body
         const fileData = {
@@ -56,9 +56,9 @@ const createItem = async (req, res) => { // TODO: subida de archivos, mejorar
 
 
 /**
- * Eliminar un registro
- * @param {*} req 
- * @param {*} res 
+ * Eliminar un registro de imagen.
+ * @param {*} req - Petición HTTP
+ * @param {*} res - Respuesta HTTP
  */
 const deleteItem = async (req, res) => {
     try {

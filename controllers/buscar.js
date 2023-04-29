@@ -3,10 +3,10 @@ const {hotelModel, habitacionModel, precioHabitacionModel} = require("../models"
 const { matchedData } = require('express-validator');
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * Busca hoteles disponibles para reservar según los criterios especificados en el cuerpo de la solicitud
+ * @param {*} req - Solicitud HTTP
+ * @param {*} res - Respuesta HTTP
+ * @returns Un array de objetos de reserva disponibles para las fechas y número de viajeros especificados en la solicitud.
  */
 const buscar = async (req, res) => {
   try {
@@ -111,9 +111,9 @@ const buscar = async (req, res) => {
 
 /**
  * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req - Solicitud HTTP
+ * @param {*} res - Respuesta HTTP
+ * @returns Un array de objetos de reserva disponibles para las fechas y número de viajeros especificados en la solicitud.
  */
 const buscarEnHotel = async (req, res) => {
   try{

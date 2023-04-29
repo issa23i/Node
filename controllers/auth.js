@@ -6,8 +6,8 @@ const { handleHttpError } =require('../utils/handleError')
 
 /**
  * Controlador que registra un usuario
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const registerController = async (req, res) => {
     try {
@@ -29,8 +29,8 @@ const registerController = async (req, res) => {
 
 /**
  * Controlador que loguea a una persona
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
  */
 const loginController = async (req, res) => {
     try {
@@ -67,7 +67,13 @@ const loginController = async (req, res) => {
         handleHttpError(res, 'ERROR_DE_AUTENTICACION')
     }
 }
-
+/**
+ * 
+ * @param {*} req - Objeto de solicitud HTTP.
+ * @param {*} res - Objeto de respuesta HTTP.
+ * @returns {Promise<void>} - Promesa que resuelve con los datos actualizados del elemento.
+ * @throws {Error} - Si ocurre algún error durante el proceso de actualización.
+ */
 const updateItem = async (req, res) => {
     try{
         const { ...body} = matchedData(req) // recoge  body  {body}

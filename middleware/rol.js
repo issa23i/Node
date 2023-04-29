@@ -2,10 +2,11 @@ const { handleHttpError } = require('../utils/handleError')
 
 
 /**
- * Pasar array con los roles permitidos
- * @param {*} roles 
- * @returns 
+ * Pasar array con los roles permitidos y devuelve un middleware
+ * @param {*} roles - Array con los roles permitidos
+ * @returns {function} - Middleware que comprueba si el usuario tiene un rol permitido y llama a `next()` si se cumplen las condiciones o llama a `handleHttpError()` si no se cumplen.
  */
+
 const checkRol = (roles) => (req, res, next) => { // doble argumento 
     try {
         const {user} = req // user fué inyectado en el req, en el middleware session. Aquí lo recuperamos

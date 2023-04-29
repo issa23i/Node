@@ -1,9 +1,9 @@
 const { resenaModel, hotelModel, reservaModel } = require('../models');
 
 /**
- * Acutaliza la puntuación del hotel, haciendo media de todas las reseñas
- * Pasar el id del hotel
- * @param {*} hotelId 
+ * Actualiza la puntuación del hotel, haciendo media de todas las reseñas
+ * @param {string} hotelId - Identificador del hotel.
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se actualiza la puntuación del hotel.
  */
 async function setPuntuacionHotel(hotelId) {
     const reservas = await reservaModel.find({ hotel: hotelId })

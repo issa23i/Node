@@ -1,0 +1,17 @@
+{
+    "plugins": [],
+    "source": {
+        "include": ["models", "models/nosql", "validators", "middleware","controllers","utils"],
+        "includePattern": ".js$",
+        "excludePattern": "(node_modules|storage|docs)"
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+        "recurse": true,
+        "destination": "./docs",
+        "template": ""
+    }
+}

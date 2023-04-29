@@ -15,10 +15,14 @@ const checkRol = require('../middleware/rol')
  */
 router.post("/register", validationRegister, registerController ) // ruta, middleware, controlador
 
-
+/**
+ * Crear un registro (item)
+ */
 router.post("/login", validationLogin, loginController ) // ruta, middleware, controlador
 
-
+/**
+ * Actualizar un registro (item)
+ */
 router.put('/:id', validationUpdateItem, authMiddleware, checkRol(['user', 'admin']), updateItem)
 
 module.exports = router
