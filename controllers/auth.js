@@ -16,6 +16,10 @@ const registerController = async (req, res) => {
         const body = {...req, password} // recoge el req y sobreescribe el password ya hasheado
         const dataUser = await personaModel.create(body) // crea un nueva persona en la base de datos
         dataUser.set("password", undefined, {strict: false}) // hacer que la data no contenga el password
+        dataUser.set('nif', undefined, {strict:false}) 
+        dataUser.set('apellido1', undefined, {strict:false}) 
+        dataUser.set('apellido2', undefined, {strict:false}) 
+        dataUser.set('email', undefined, {strict:false}) 
 
         const data = {
             token:await tokenSign(dataUser), // Devuelve la firma
@@ -37,7 +41,7 @@ const loginController = async (req, res) => {
         req = matchedData(req) // curar la request
         const user = await personaModel
             .findOne({email:req.email}) // encontrar al usuario con ese email
-            .select('nombre email password rol') // selecciona los campos que necesitamos 
+            .select('_id nombre email password rol') // selecciona los campos que necesitamos 
 
         if (! user ) {
             handleHttpError(res, 'ERROR_DE_AUTENTICACION', 401) // Código no autorización
@@ -54,7 +58,7 @@ const loginController = async (req, res) => {
         }
 
         user.set('password', undefined, {strict:false}) // no queremos que muestre la contraseña, una vez validada
-
+        user.set('email', undefined, {strict:false}) 
         // usuario y contraseña coinciden, verificar firma
         const data = {
             token:await tokenSign(user), // Devuelve la firma
@@ -108,7 +112,9 @@ const updateItem = async (req, res) => {
             {new: true} // que devuelva actualizado, no el antiguo
         ) 
         data.set("password", undefined, {strict: false}) // hacer que la data no contenga el password
-        
+        data.set('email', undefined, {strict:false}) 
+
+
         res.send({data})
     } catch (e) {
         console.log(e)
