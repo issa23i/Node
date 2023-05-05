@@ -11,7 +11,7 @@ const { matchedData } = require('express-validator');
 const buscar = async (req, res) => {
   try {
     const { ciudad, checkIn, checkOut, viajeros } = req.body;
-    const user = req.user
+    // const user = req.user
     
     // se convierte a fecha
     const checkInDate = new Date(checkIn);
@@ -85,8 +85,9 @@ const buscar = async (req, res) => {
 
           console.log(precioTotalPorNoche, 'precio total por noche')
           reservas.push({
+            /**
           // el cliente que está realizando la consulta es el que reserva
-          cliente:user._id,
+          cliente:user._id, */
           // se crea un objeto para recoger el hotel y las habitaciones del mismo disponibles
           hotel: hotel._id,
           fechaCheckin: checkInDate,
@@ -121,7 +122,7 @@ const buscarEnHotel = async (req, res) => {
 
       console.log( id)
       const { checkIn, checkOut, viajeros } = req.body;
-      const user = req.user
+      //const user = req.user
     console.log(req.body)
 
     // se convierte a fecha
@@ -194,8 +195,9 @@ const buscarEnHotel = async (req, res) => {
 
         console.log(precioTotalPorNoche, 'precio total por noche')
         reservas.push({
+          /** 
         // el cliente que está realizando la consulta es el que reserva
-        cliente:user._id,
+        cliente:user._id,*/
         // se crea un objeto para recoger el hotel y las habitaciones del mismo disponibles
         hotel: hotel._id,
         fechaCheckin: checkInDate,

@@ -11,12 +11,12 @@ const checkRol = require('../middleware/rol')
 /**
  * Lista los items
  */
-router.get("/", authMiddleware, getItems) // middleware de session
+router.get("/", /**authMiddleware,*/ getItems) // middleware de session
 
 /**
  * Obtener un detalle (item)
  */
-router.get('/:id', validationGetItem, getItem)
+router.get('/:id', /**validationGetItem,*/ getItem)
 
 /**
  * Crear un registro (item)
