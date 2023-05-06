@@ -31,20 +31,23 @@ const getItem = async (req, res) => {
     const { id } = matchedData(req);
         // con el middleware session hemos recogido al usuario que está realizando la petición
         const user = req.user;
+        if(!user){
+            throw new Error('ERROR_GET_USER');
+        }
         const persona = await personaModel.findById(id) 
 
         if (persona) {
             const esMismaPersona = persona._id.toString() === user._id.toString() 
             
             if (!esMismaPersona){
-              res.status(403).send({ message: 'No tiene permisos para visualizar el contenido' });
+              res.status(403).send({ message: 'No tiene permisos para visualizar este perfil' });
             } else {
               res.send({ persona });
             }
           }
         
     } catch (e) {
-        handleHttpError(res, 'ERROR_EN_GET_ITEM')
+        handleHttpError(res, 'ERROR_GET_USER')
     }
 }
 
