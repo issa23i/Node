@@ -9,6 +9,7 @@ const {handleHttpError} = require('../utils/handleError')
  * @param {*} res - Respuesta HTTP a enviar
  */
 const getItems = async (req, res) => {
+    console.log(req)
     try {
         // TODO: si queremos quitar user, podemos sólo con comentar const user y la variable user en el send
         // TODO: si borramos lo anterior, borrar también en el middleware session el const user y req.user
@@ -29,6 +30,7 @@ const getItems = async (req, res) => {
  * @param {*} res - Respuesta HTTP a enviar
  */
 const getItem = async (req, res) => {
+    
     try{
         req = matchedData(req)
         const {id} = req
