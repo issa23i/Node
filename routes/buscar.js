@@ -10,11 +10,11 @@ const checkRol = require('../middleware/rol')
 /**
  * Listar items
  */
-router.get('/', validationSearchParams, /**authMiddleware, checkRol(['admin', 'user']),*/ buscar);
+router.post('/', validationSearchParams, /**authMiddleware, checkRol(['admin', 'user']),*/ buscar);
 
 /**
  * Obtener un detalle (item)
  */
-router.get('/:id', validationSearchParamsHotel, /**authMiddleware, checkRol(['admin', 'user']),*/ buscarEnHotel)
+router.post('/:id', validationSearchParamsHotel, /**authMiddleware, checkRol(['admin', 'user']),*/ buscarEnHotel)
 
 module.exports = router
