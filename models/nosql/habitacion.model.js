@@ -11,7 +11,7 @@
 */
 
 const mongoose = require('mongoose');
-
+const {tipoCama} = require('../../validators/habitacion')
 
 /**
  * Esquema de una habitación de hotel.
@@ -29,7 +29,7 @@ const habitacionSchema = new mongoose.Schema({
   },
   tipo_cama: {
     type: String,
-    enum: ['individual', 'grande', 'extra grande'],
+    enum: tipoCama,
     required: true
   },
   vistas: {
@@ -43,3 +43,4 @@ const habitacionSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('Habitacion', habitacionSchema);
+

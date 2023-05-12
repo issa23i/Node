@@ -5,6 +5,7 @@ const { validationCreateResena, validationGetResena } = require('../validators/r
 const customHeader = require('../middleware/customHeader')
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
+const roles = require('../roles')
 
 // http://localhost:3001/resenas GET, POST, DELETE, PUT
 
@@ -21,17 +22,17 @@ router.get('/:id', validationGetResena, /**authMiddleware,*/ getItem)
 /**
  * Crear un registro (item)
  */
-router.post("/", validationCreateResena, authMiddleware, checkRol(['user', 'admin']), /**customHeader ,*/ createItem)
+router.post("/", validationCreateResena, authMiddleware, checkRol([roles.user, roles.admin]), /**customHeader ,*/ createItem)
 
 /**
  * Actualizar un registro (item)
  */
 // Una resena sólo debe poder actualizarse por el usuario que la creó o el admin, hay que validar esto
-router.put('/:id', validationGetResena, validationCreateResena, authMiddleware, checkRol(['user', 'admin']), updateItem)
+router.put('/:id', validationGetResena, validationCreateResena, authMiddleware, checkRol([roles.user, roles.admin]), updateItem)
 
 /**
  * Borrar un registro
  */
-router.delete('/:id', validationGetResena, authMiddleware, checkRol(['user', 'admin']), deleteItem)
+router.delete('/:id', validationGetResena, authMiddleware, checkRol([roles.user, roles.admin]), deleteItem)
 
 module.exports = router

@@ -5,24 +5,26 @@ const { validationCreateItem, validationGetItem } = require('../validators/reser
 const customHeader = require('../middleware/customHeader');
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
+const roles = require('../roles')
+
 // http://localhost:3001/reservas GET, POST, DELETE, PUT
 
 /**
  * Lista los items
  */
 // Las reservas sólo pueden ser listadas por un admin
-router.get("/", authMiddleware, checkRol(['admin']),getItems);
+router.get("/", authMiddleware, checkRol(roles.admin),getItems);
 
 /**
  * Obtiene un detalle (item)
  */
 // Sólo puede verlas admin y el usuario que la creó (mirar controlador getItem en reserva.js)
-router.get('/:id', validationGetItem,  authMiddleware, checkRol(['user', 'admin']), getItem);
+router.get('/:id', validationGetItem,  authMiddleware, checkRol([roles.user, roles.admin]), getItem);
 
 /**
  * Crea un registro (item)
  */
-router.post("/", validationCreateItem,  authMiddleware, checkRol(['user', 'admin']),/**customHeader ,*/ createItem);
+router.post("/", validationCreateItem,  authMiddleware, checkRol([roles.user, roles.admin]),/**customHeader ,*/ createItem);
 
 /**
  * Actualiza un registro (item)
@@ -34,6 +36,6 @@ router.post("/", validationCreateItem,  authMiddleware, checkRol(['user', 'admin
  * Borra un registro
  */
 // Sólo puede ser borrada por un admin
-router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin']), deleteItem);
+router.delete('/:id', validationGetItem, authMiddleware, checkRol([roles.admin]), deleteItem);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const { matchedData } = require('express-validator');
 const { resenaModel, hotelModel, reservaModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
 const setPuntuacionHotel = require('../utils/handlePuntuacionHotel')
+const roles = require('../roles')
 
 
 /**
@@ -110,8 +111,9 @@ const updateItem = async (req, res) => {
         const reserva = await reservaModel.findById(reservaId);
     
         // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+        // o sea un administrador
         // gracias al middleware session
-        if (reserva.cliente.toString() !== user._id.toString() && user.rol !== 'admin') {
+        if (reserva.cliente.toString() !== user._id.toString() && user.rol.toString() !== roles.admin.toString()) {
           return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
         }
 
@@ -155,8 +157,9 @@ const deleteItem = async (req, res) => {
     const reserva = await reservaModel.findById(reservaId);
 
     // Verificar que el usuario autenticado sea el mismo que realizó la reserva
+    // o sea un administrador
         // gracias al middleware session
-        if (reserva.cliente.toString() !== user._id.toString() && user.rol !== 'admin') {
+        if (reserva.cliente.toString() !== user._id.toString() && user.rol.toString() !== roles.admin.toString()) {
           return res.status(403).json({ error: 'El usuario no tiene permisos para crear una reseña para esta reserva.' });
         }
 

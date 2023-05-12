@@ -4,6 +4,7 @@ const router = express.Router()
 const { validationCreateItem, validationGetItem } = require('../validators/habitacion')
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
+const roles = require('../roles')
 
 // http://localhost:3001/habitaciones GET, POST, DELETE, PUT
 
@@ -20,16 +21,16 @@ router.get('/:id', validationGetItem, getItem)
 /**
  * Crear un registro (item)
  */
-router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']), createItem)
+router.post("/", validationCreateItem, authMiddleware, checkRol(roles.admin), createItem)
 
 /**
  * Actualizar un registro (item)
  */
-router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin']), updateItem)
+router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol([roles.admin]), updateItem)
 
 /**
  * Borrar un registro
  */
-router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin']), deleteItem)
+router.delete('/:id', validationGetItem, authMiddleware, checkRol([roles.admin]), deleteItem)
 
 module.exports = router

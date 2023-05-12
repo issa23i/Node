@@ -5,6 +5,7 @@ const uploadMiddleware = require('../utils/handleStorage') // configuración arc
 const validatorGetItem = require('../validators/imagenes')
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
+const roles = require('../roles')
 
 // http://localhost:3001/imagenes GET, POST, DELETE, PUT
 
@@ -12,7 +13,7 @@ const checkRol = require('../middleware/rol')
 /**
  * Subida de archivo con post item
  */ 
-router.post('/', authMiddleware, checkRol(['admin']), /** validationCreateItem,*/ uploadMiddleware.single('myfile'), createItem) // método post para el envío de archivos 
+router.post('/', authMiddleware, checkRol([roles.admin]), /** validationCreateItem,*/ uploadMiddleware.single('myfile'), createItem) // método post para el envío de archivos 
 
 /**
  * Listar items
@@ -27,6 +28,6 @@ router.get("/:id", validatorGetItem, getItem)
 /**
  * Borrar un item
  */
-router.delete('/:id', validatorGetItem, authMiddleware, checkRol(['admin']), deleteItem)
+router.delete('/:id', validatorGetItem, authMiddleware, checkRol([roles.admin]), deleteItem)
 
 module.exports = router

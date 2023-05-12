@@ -1,6 +1,7 @@
 const { matchedData } = require('express-validator');
 const { precioHabitacionModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
+const roles = require('../roles')
 
 /**
  * Obtener una lista de todos los registros en la base de datos de precios de habitaciones.
@@ -39,9 +40,19 @@ const getItem = async (req, res) => {
  */
 const createItem = async (req, res) => {
   try {
+
     const body = matchedData(req);
-    const data = await precioHabitacionModel.create(body);
-    res.send({ data });
+
+    const user = req.user
+
+
+    if(user.rol.toString() === roles.admin.toString()){
+      const data = await precioHabitacionModel.create(body);
+      res.send({ data });
+    } else {
+      res.status(403).send({ message: 'No tienes permisos para realizar esta acción' });
+    }
+    
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_CREATE_ITEM');
   }
@@ -55,12 +66,19 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
   try{
     const { id, ...body } = matchedData(req);
-    const data = await precioHabitacionModel.findOneAndUpdate(
-      { _id: id },
-      body,
-      { new: true }
-    );
-    res.send({ data });
+    const user = req.user
+
+
+    if(user.rol.toString() === roles.admin.toString()){
+      const data = await precioHabitacionModel.findOneAndUpdate(
+        { _id: id },
+        body,
+        { new: true }
+      );
+      res.send({ data });
+    } else {
+      res.status(403).send({ message: 'No tienes permisos para realizar esta acción' });
+    }
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_UPDATE_ITEM');
   }

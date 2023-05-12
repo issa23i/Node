@@ -2,6 +2,7 @@ const { matchedData } = require('express-validator');
 const { kellyModel } = require('../models');
 const { handleHttpError } = require('../utils/handleError');
 const tieneSello = require('../utils/handleSelloHotel')
+const roles = require('../roles')
 
 /**
  * Obtener una lista de registros de kellys
@@ -27,7 +28,7 @@ const getItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
     const user = req.user
-    if(user.rol === 'admin' || id === user.id){
+    if(user.rol.toString() === roles.admin.toString() || id === user.id){
       const data = await kellyModel.findById(id);
       res.send({ data });
     } else {
@@ -69,7 +70,7 @@ const updateItem = async (req, res) => {
         const user = req.user
         const { id, ...body } = matchedData(req); // recoge id y lo que sobra en body {id} {body}
         
-        if(user.rol === 'admin' || id === user.id){ // si es admin o la propia kelly
+        if(user.rol.toString() === roles.admin.toString()|| id === user.id){ // si es admin o la propia kelly
           const data = await kellyModel.findOneAndUpdate(
             { _id: id }, // busca por id,
             body, // devuelve el cuerpo (body)
@@ -100,7 +101,7 @@ const deleteItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
     const user = req.user
-    if(user.rol === 'admin' || id === user.id){
+    if(user.rol.toString() === roles.admin.toString() || id === user.id){
       
     const data = await kellyModel.findOneAndDelete({ _id: id }); // borra el registro que coincida con el id
     

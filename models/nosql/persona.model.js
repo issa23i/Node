@@ -13,6 +13,9 @@
  */
 
 const mongoose = require('mongoose');
+const roles = require('../../roles')
+// crea un nuevo array de roles a partir del objeto roles
+const rolesPermitidos = [...roles.admin, ...roles.user, ...roles.kelly]
 
 /**
  * Esquema de Persona para la base de datos.
@@ -47,7 +50,7 @@ const personaSchema = new mongoose.Schema({
   },
   rol: {
     type: String,
-    enum: ['admin', 'user', 'kelly'],
+    enum: rolesPermitidos,
     default: 'user',
     required: true
   }

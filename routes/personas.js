@@ -5,6 +5,7 @@ const { validationCreateItem, validationGetItem, validationUpdateItem } = requir
 const customHeader = require('../middleware/customHeader')
 const authMiddleware = require('../middleware/session')
 const checkRol = require('../middleware/rol')
+const roles = require('../roles')
 
 // http://localhost:3001/personas GET, POST, DELETE, PUT
 
@@ -18,12 +19,12 @@ const checkRol = require('../middleware/rol')
  * Obtener un detalle (item)
  */
 // Sólo el propio usuario puede ver su detalle (controlador getItem)
-router.get('/:id', validationGetItem, authMiddleware, checkRol([ 'user', 'admin']), getItem)
+router.get('/:id', validationGetItem, authMiddleware, checkRol([ roles.user, roles.admin]), getItem)
 
 /**
  * Crear un registro (item)
  */
-router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']), /**customHeader ,*/ createItem)
+router.post("/", validationCreateItem, authMiddleware, checkRol([roles.admin]), /**customHeader ,*/ createItem)
 
 /**
  * Actualizar un registro (item)
@@ -34,6 +35,6 @@ router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']), /**c
 /**
  * Borrar un registro
  */
-router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin']), deleteItem)
+router.delete('/:id', validationGetItem, authMiddleware, checkRol([roles.admin]), deleteItem)
 
 module.exports = router

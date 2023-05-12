@@ -5,6 +5,7 @@ const authMiddleware = require('../middleware/session')
 const { validationCreateItem, validationGetItem} = require('../validators/hoteles')
 const customHeader = require('../middleware/customHeader')
 const checkRol = require('../middleware/rol')
+const roles = require('../roles')
 
 // http://localhost:3001/hoteles GET, POST, DELETE, PUT
 
@@ -21,17 +22,17 @@ router.get('/:id', validationGetItem, getItem)
 /**
  * Crear un registro (item)
  */
-router.post("/", validationCreateItem, authMiddleware, checkRol(['admin']),/**customHeader ,*/createItem) 
+router.post("/", validationCreateItem, authMiddleware, checkRol([roles.admin]),/**customHeader ,*/createItem) 
 
 /**
  * Actualizar un registro (item)
  */
-router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol(['admin']), updateItem) // hace uso de dos middlewares
+router.put('/:id', validationGetItem, validationCreateItem, authMiddleware, checkRol([roles.admin]), updateItem) // hace uso de dos middlewares
 
 /**
  * Borrar un registro
  */
-router.delete('/:id', validationGetItem, authMiddleware, checkRol(['admin']), deleteItem)
+router.delete('/:id', validationGetItem, authMiddleware, checkRol([roles.admin]), deleteItem)
 
 
 module.exports = router

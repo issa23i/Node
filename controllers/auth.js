@@ -3,6 +3,7 @@ const { encrypt, compare} = require('../utils/handlePassword')
 const {tokenSign} = require('../utils/handleJwt')
 const { personaModel } = require('../models')
 const { handleHttpError } =require('../utils/handleError')
+const roles = require('../roles')
 
 /**
  * Controlador que registra un usuario
@@ -101,8 +102,8 @@ const updateItem = async (req, res) => {
         }
 
         // Sólo la persona logueada puede modificar sus datos
-        if(user._id.toString() !== persona._id.toString()){
-            handleHttpError(res, 'FORBIDDEN', 403) // Código no autorización
+        if( (user._id.toString() !== persona._id.toString()) && (user.rol.toString() !== roles.admin.toString()) ){
+            handleHttpError(res, 'NO TIENE PERMISOS PARA ACTUALIZAR LOS DATOS', 403) // Código no autorización
             return
         }
 
