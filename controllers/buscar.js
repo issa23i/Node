@@ -1,5 +1,5 @@
 const {handleHttpError} = require("../utils/handleError");
-const {hotelModel, habitacionModel, precioHabitacionModel} = require("../models");
+const {hotelModel, habitacionModel, precioHabitacionModel, imagenModel} = require("../models");
 const { matchedData } = require('express-validator');
 
 /**
@@ -83,20 +83,30 @@ const buscar = async (req, res) => {
           
           const precioTotalPorNoche = numNoches * precioMasReciente.precio;
 
+          ////
+          const imagenId = hotel.imagenes[0]; // ID de la imagen
+      const imagen = await imagenModel.findById(imagenId); // Consulta para obtener la imagen
+
+      if (imagen) {
+        const imagenUrl = imagen.url; // URL de la imagen
+          ////
           console.log(precioTotalPorNoche, 'precio total por noche')
           reservas.push({
             /**
           // el cliente que está realizando la consulta es el que reserva
           cliente:user._id, */
           // se crea un objeto para recoger el hotel y las habitaciones del mismo disponibles
-          hotel: hotel._id,
+          hotelId: hotel._id,
+          nombreHotel: hotel.nombre,
+          estrellas: hotel.estrellas,
+          imagen: imagenUrl,
           fechaCheckin: checkInDate,
           fechaCheckout: checkOutDate,
           numPlazas : viajeros,
-          habitacion: habitacion._id,
-          aceptada: false,
+          habitacionId: habitacion._id,
           precioTotal : precioTotalPorNoche,
         });
+      }
         }
       }
     }
@@ -193,21 +203,30 @@ const buscarEnHotel = async (req, res) => {
         
         const precioTotalPorNoche = numNoches * precioMasReciente.precio;
 
+        ///
+        const imagenId = habitacion.imagenes[0]; // ID de la imagen
+      const imagen = await imagenModel.findById(imagenId); // Consulta para obtener la imagen
+
+      if (imagen) {
+        const imagenUrl = imagen.url; // URL de la imagen
+        ///
         console.log(precioTotalPorNoche, 'precio total por noche')
         reservas.push({
           /** 
         // el cliente que está realizando la consulta es el que reserva
         cliente:user._id,*/
         // se crea un objeto para recoger el hotel y las habitaciones del mismo disponibles
-        hotel: hotel._id,
         fechaCheckin: checkInDate,
         fechaCheckout: checkOutDate,
         numPlazas : viajeros,
-        habitacion: habitacion._id,
-        aceptada: false,
+        habitacionId: habitacion._id,
+        imagen: imagenUrl,
+        vistas: habitacion.vistas,
+        tipoCama: habitacion.tipo_cama,
         precioTotal : precioTotalPorNoche,
       });
       }
+    }
     }
 
 
