@@ -224,6 +224,7 @@ const buscarEnHotel = async (req, res) => {
         vistas: habitacion.vistas,
         tipoCama: habitacion.tipo_cama,
         precioTotal : precioTotalPorNoche,
+        hotelId: id
       });
       }
     }
