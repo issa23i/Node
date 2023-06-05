@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getItems, getItem, createItem, updateItem, deleteItem } = require('../controllers/reserva');
+const { getItems, getItemsByUser, getItem, createItem, updateItem, deleteItem } = require('../controllers/reserva');
 const { validationCreateItem, validationGetItem } = require('../validators/reserva');
 const customHeader = require('../middleware/customHeader');
 const authMiddleware = require('../middleware/session')
@@ -13,7 +13,13 @@ const roles = require('../roles')
  * Lista los items
  */
 // Las reservas sólo pueden ser listadas por un admin
-router.get("/", authMiddleware, checkRol(roles.admin),getItems);
+router.get("/admin", authMiddleware, checkRol(roles.admin),getItems);
+
+/**
+ * Lista los items ppor usuario
+ */
+// Las reservas sólo pueden ser listadas por un admin o por el usuario que las realizó
+router.get("/", authMiddleware, checkRol([roles.user, roles.admin]),getItemsByUser);
 
 /**
  * Obtiene un detalle (item)

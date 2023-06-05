@@ -9,12 +9,43 @@ const { handleHttpError } = require('../utils/handleError');
  */
 const getItems = async (req, res) => {
   try {
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+    if(user){
+      if(user.rol !== 'admin'){
+        throw new Error('Permiso denegado');
+      }
+    } else {
+      throw new Error('Permiso denegado');
+    }
     const data = await reservaModel.find({});
     res.send({ data });
   } catch (e) {
     handleHttpError(res, 'ERROR_EN_GET_ITEMS');
   }
 };
+
+/**
+ * Obtener una lista de todas las reservas.
+ * @param {*} req - La petición HTTP.
+ * @param {*} res - La respuesta HTTP.
+ */
+const getItemsByUser = async (req, res) => {
+  try {
+    // con el middleware session hemos recogido al usuario que está realizando la petición
+    const user = req.user;
+    if(!user){
+      throw new Error('Permiso denegado');
+    }
+    // buscamos sus reservas
+    const data = await reservaModel.find({ cliente: user._id });
+    res.send({ data });
+  } catch (e) {
+    handleHttpError(res, 'ERROR_EN_GET_ITEMS');
+  }
+};
+
+
 
 /**
  * Obtener una reserva específica por su ID.
@@ -95,4 +126,4 @@ const deleteItem = async (req, res) => {
   }
 };
 
-module.exports = { getItems, getItem, createItem, updateItem, deleteItem };
+module.exports = { getItems, getItemsByUser, getItem, createItem, updateItem, deleteItem };
