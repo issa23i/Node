@@ -48,9 +48,11 @@ const createItem = async (req, res) => {
         console.log(body)
         console.log(req.user._id)
         const data = await hotelModel.create(body)
+        console.log(data)
         res.send({data})
     } catch (e) {
-        handleHttpError(res, 'ERROR_EN_CREATE_ITEM')
+        console.log(e)
+        handleHttpError(res, 'ERROR_EN_CREATE_ITEM', e)
     }
 }
 
