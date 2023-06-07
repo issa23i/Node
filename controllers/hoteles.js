@@ -11,10 +11,6 @@ const {handleHttpError} = require('../utils/handleError')
 const getItems = async (req, res) => {
     console.log(req)
     try {
-        // TODO: si queremos quitar user, podemos sólo con comentar const user y la variable user en el send
-        // TODO: si borramos lo anterior, borrar también en el middleware session el const user y req.user
-        // TODO: comprobar si hay más sitios donde nos interesa usar el user en la request (tres siguientes líneas)
-        // const user = req.user // saber quién está realizando la petición gracias a authMiddleware
         
         // Sólo se muestran los hoteles que tienen sello
         const data = await hotelModel.find({ tieneSello: true })
@@ -49,6 +45,8 @@ const getItem = async (req, res) => {
 const createItem = async (req, res) => {
     try {
         const body = matchedData(req) // recoge sólo los datos validados (carpeta validators)
+        console.log(body)
+        console.log(req.user._id)
         const data = await hotelModel.create(body)
         res.send({data})
     } catch (e) {
@@ -86,6 +84,7 @@ const deleteItem = async (req, res) => {
         req = matchedData(req)
         const {id} = req
         const data = await hotelModel.deleteOne({_id:id}) // borra el registro que coincida con el id
+        console.log(data)
         res.send({data})
     } catch (e) {
         handleHttpError(res, 'ERROR_EN_DELETE_ITEM')

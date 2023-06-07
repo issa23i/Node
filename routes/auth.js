@@ -23,8 +23,8 @@ router.post("/register", validationRegister, registerController ) // ruta, middl
 router.post("/login", validationLogin, loginController ) // ruta, middleware, controlador
 
 /**
- * Actualizar un registro (item)
+ * Actualizar un registro (item) Sólo administradores
  */
-router.put('/:id', validationUpdateItem, authMiddleware, checkRol([roles.user, roles.admin]), updateItem)
+router.put('/:id', validationUpdateItem, authMiddleware, checkRol([roles.admin]), updateItem)
 
 module.exports = router
