@@ -43,6 +43,7 @@ const getItem = async (req, res) => {
 const createItem = async (req, res) => { 
     try {
         const { body, file } = req // deconstruido const body = req.body
+        console.log(file)
         const fileData = {
             filename : file.filename,
             url : `${PUBLIC_URL}/${file.filename}`
