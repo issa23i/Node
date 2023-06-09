@@ -43,11 +43,17 @@ const getItem = async (req, res) => {
 const createItem = async (req, res) => { 
     try {
         const { body, file } = req // deconstruido const body = req.body
-        console.log(file)
+
+        // Verificar que el archivo sea de tipo imagen
+        if (!isImageFile(file)) {
+            throw new Error('El archivo seleccionado no es una imagen válida. Sólo admitidos jpg, jpeg, png y gif');
+        }
+
         const fileData = {
             filename : file.filename,
             url : `${PUBLIC_URL}/${file.filename}`
         }
+        console.log(fileData)
         const data = await imagenModel.create(fileData)
         res.send({data})
     } catch (e) {
@@ -82,5 +88,25 @@ const deleteItem = async (req, res) => {
         handleHttpError(res, 'ERROR_EN_DELETE_ITEM')
     }
 }
+
+/**
+ * Función para verificar si el archivo es de tipo imagen
+ * @param {*} file 
+ * @returns 
+ */
+const isImageFile = (file) => {
+    // Obtener la extensión del archivo
+    const extension = file.originalname.split('.').pop();
+
+    // Verificar si la extensión es compatible con imágenes
+    const supportedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    const isSupportedExtension = supportedExtensions.includes(extension.toLowerCase());
+
+    // Verificar el tipo MIME del archivo (opcional)
+    const isImageMime = file.mimetype.startsWith('image/');
+
+    // Devolver true si la extensión y el tipo MIME son válidos
+    return isSupportedExtension && isImageMime;
+};
 
 module.exports = { getItems, getItem, createItem, deleteItem }
