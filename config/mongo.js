@@ -23,7 +23,7 @@ const dbConnect = async () => {
     
     console.log('Conexión realizada con éxito con MongoDB a la Base de Datos :', mongoose.connection.db.databaseName);
   } catch (error) {
-    console.error('Ocurrió un erro al acceder a MongoDB: ', err)
+    console.error('Ocurrió un erro al acceder a MongoDB: ', error)
   }
 };
 
